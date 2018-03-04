@@ -57,14 +57,15 @@ public final class Homework03
 	private TextRenderer	renderer;
 
 	// Outline Bounds of the window
-	private final float MAX_X = 2.0f;
-	private final float MAX_Y = 1.0f;
-	private final float MIN_X = -2.0f;
-	private final float MIN_Y = -1.0f;
+	private static final Point MAX = new Point(2.0f, 1.0f);
+	private static final Point MIN = new Point(-2.0f, -1.0f);
 
 	// Outline background limits
-	private final float ROAD_LIM = -0.6f;
-	private final float GRASS_LIM = -0.05f;
+	private static final float ROAD_LIM = -0.6f;
+	private static final float GRASS_LIM = -0.05f;
+
+	private static Background background = new Background(MIN, MAX, GRASS_LIM, ROAD_LIM);
+	private static Hopscotch hop = new Hopscotch(ROAD_LIM);
 
 	//**********************************************************************
 	// Main
@@ -75,7 +76,8 @@ public final class Homework03
 		GLProfile		profile = GLProfile.getDefault();
 		GLCapabilities	capabilities = new GLCapabilities(profile);
 		GLCanvas		canvas = new GLCanvas(capabilities);
-		JFrame			frame = new JFrame("Homework03");
+
+		JFrame 			frame = new JFrame("Homework03");
 
 		canvas.setPreferredSize(new Dimension(1100, 550));
 
@@ -92,6 +94,7 @@ public final class Homework03
 			});
 
 		canvas.addGLEventListener(new Homework03());
+		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad()));
 
 		FPSAnimator		animator = new FPSAnimator(canvas, 60);
 
@@ -146,18 +149,10 @@ public final class Homework03
 		// Scale the GL coordinate system to the window
 		setProjection(gl);
 
-		// Draw the sky
-		this.drawSky(gl);
+		background.update(gl);
 
-		// Draw the galaxy
-		this.drawGalaxy(gl);
-
-		// Draw the road
-		this.drawRoad(gl);
-
-		// Draw the grass
-		this.drawGrass(gl);
-
+		hop.update(gl);
+		
 		// Draw the moon
 		this.drawMoon(gl);
 
@@ -165,30 +160,30 @@ public final class Homework03
 		this.drawGreenHouse(gl);
 
 		// Draw far left fence
-		for(float x = MIN_X + 0.02f, count = 0; count < 4; x += 0.075f, count++)
+		for(float x = MIN.getFloatX() + 0.02f, count = 0; count < 4; x += 0.075f, count++)
 		{
 			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
 			this.drawFencePost(gl, start);
 		}
 
 		// Draw right side fence against the left side of the green house
-		for(float x = MIN_X + 0.86f, count = 0; count < 4; x += 0.075f, count++)
+		for(float x = MIN.getFloatX() + 0.86f, count = 0; count < 4; x += 0.075f, count++)
 		{
 			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
 			this.drawFencePost(gl, start);
 		}
 
 		// Draw the right side fence on the other side of the right house
-		for(float x = MIN_X + 1.18f, count = 0; count < 4; x += 0.075f, count++)
+		for(float x = MIN.getFloatX() + 1.18f, count = 0; count < 4; x += 0.075f, count++)
 		{
 			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
 			this.drawFencePost(gl, start);
 		}
 
 		// Draw far right fence
-		final Point2D.Float first = new Point2D.Float(MAX_X - 2*0.075f - 0.02f, ROAD_LIM + 0.01f);
+		final Point2D.Float first = new Point2D.Float(MAX.getFloatX() - 2*0.075f - 0.02f, ROAD_LIM + 0.01f);
 		this.drawFencePost(gl, first);
-		final Point2D.Float reflected = new Point2D.Float(MAX_X - 0.075f - 0.02f, ROAD_LIM + 0.01f);
+		final Point2D.Float reflected = new Point2D.Float(MAX.getFloatX() - 0.075f - 0.02f, ROAD_LIM + 0.01f);
 		this.drawReflectedFencePost(gl, reflected);
 
 		// Draw right hand brown house
@@ -198,7 +193,7 @@ public final class Homework03
 		this.drawLeftBrownHouse(gl);
 
 		// Draw the groups of reflected fence posts
-		for(float x = MAX_X - 3*0.075f - 0.02f-0.5f; x > MAX_X - 10*0.075f - 0.02f-0.5f; x -= 2*0.075f)
+		for(float x = MAX.getFloatX() - 3*0.075f - 0.02f-0.5f; x > MAX.getFloatX() - 10*0.075f - 0.02f-0.5f; x -= 2*0.075f)
 		{
 			final Point2D.Float first_left = new Point2D.Float(x - 0.075f, ROAD_LIM + 0.01f);
 			this.drawFencePost(gl, first_left);
@@ -208,15 +203,15 @@ public final class Homework03
 
 		// Draw eight point starts in the sky
 		final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-		final Point2D.Float star1 = new Point2D.Float(1.0f, MAX_Y - 0.2f);
+		final Point2D.Float star1 = new Point2D.Float(1.0f, MAX.getFloatY() - 0.2f);
 		this.drawEightPointStar(gl, star1, 0.08f, YELLOW, 1f);
-		final Point2D.Float star2 = new Point2D.Float(1.3f, MAX_Y - 0.3f);
+		final Point2D.Float star2 = new Point2D.Float(1.3f, MAX.getFloatY() - 0.3f);
 		this.drawEightPointStar(gl, star2, 0.08f, YELLOW, 1f);
-		final Point2D.Float star3 = new Point2D.Float(1.6f, MAX_Y - 0.25f);
+		final Point2D.Float star3 = new Point2D.Float(1.6f, MAX.getFloatY() - 0.25f);
 		this.drawEightPointStar(gl, star3, 0.08f, YELLOW, 1f);
-		final Point2D.Float star4 = new Point2D.Float(1.7f, MAX_Y - 0.5f);
+		final Point2D.Float star4 = new Point2D.Float(1.7f, MAX.getFloatY() - 0.5f);
 		this.drawEightPointStar(gl, star4, 0.08f, YELLOW, 0.5f);
-		final Point2D.Float star5 = new Point2D.Float(1.55f, MAX_Y - 0.7f);
+		final Point2D.Float star5 = new Point2D.Float(1.55f, MAX.getFloatY() - 0.7f);
 		this.drawEightPointStar(gl, star5, 0.08f, YELLOW, 0.3f);
 
 		// Draw the kite and string
@@ -236,174 +231,6 @@ public final class Homework03
 		glu.gluOrtho2D(-2.0f, 2.0f, -1.0f, 1.0f);	// 2D translate and scale
 	}
 
-	//**********************************************************************
-	// Private Methods (Scene)
-	//**********************************************************************
-
-	/* Draw the road
-	 * @param gl: The GL context
-	 */
-	private void drawRoad(GL2 gl)
-	{
-		// Constants for road dimensions
-		final float DELTA = 0.2f;
-		final float HEIGHT = 0.4f;
-		final float OFFSET = 0.05f;
-		final float GRAY_VAL = 0.61f;
-		// Start for the road lines
-		float rootX = MIN_X - OFFSET;
-		float rootY = -1.0f;
-
-		// Draw gray background to the road
-		final Point2D.Float one = new Point2D.Float(rootX, rootY);
-		final Point2D.Float two = new Point2D.Float(MAX_X, rootY);
-		final Point2D.Float three = new Point2D.Float(MAX_X, MIN_Y + HEIGHT);
-		final Point2D.Float four = new Point2D.Float(rootX, MIN_Y + HEIGHT);
-		final float[] color = new float[]{GRAY_VAL, GRAY_VAL, GRAY_VAL};
-		Utils.drawQuad(gl, one, two, three, four, color);
-
-		// Draw hopscotch pattern
-		this.drawHopscotch(gl);
-
-		// Draw the lines on the road
-		final float[] white = new float[]{1.0f, 1.0f, 1.0f};
-		Utils.drawLine(gl, new Point2D.Float(rootX, -1.0f + HEIGHT), new Point2D.Float(MAX_X, -1.0f + HEIGHT), white);
-		Utils.drawLine(gl, new Point2D.Float(rootX, -1.0f), new Point2D.Float(MAX_X, -1.0f), white);
-		for(float x = rootX; x < MAX_X + 0.15f; x += DELTA)
-		{
-			Utils.drawLine(gl, new Point2D.Float(x, -1.0f), new Point2D.Float(x + OFFSET, -1.0f + HEIGHT), white);
-		}
-	}
-
-	/* Draw the hopscotch pattern on the road
-	 * @param gl: GL context
-	 */
-	private void drawHopscotch(GL2 gl)
-	{
-		// Dimensions for each individual square
-		final float DELTA = 0.1f;
-		final float OFFSET = 0.015f;
-		final float HEIGHT = DELTA;
-
-		// Define the color for the pattern
-		final float[] outline = new float[]{1.0f, 1.0f, 1.0f};
-		final float[] fill = new float[]{0.9f, 0.837f, 0.735f};
-
-		// Draw the first rectangles
-		final Point2D.Float startRect = new Point2D.Float(0f, ROAD_LIM - 0.3f);
-		this.drawHopRect(gl, startRect, outline, fill);
-		this.drawHopRect(gl, new Point2D.Float((float)startRect.getX() + DELTA, (float)startRect.getY()), outline, fill);
-		final Point2D.Float endHalf = new Point2D.Float((float)startRect.getX() + DELTA*2, (float)startRect.getY());
-		this.drawHopRect(gl, endHalf, outline, fill);
-
-		// Draw the two in the middle - first time
-		final Point2D.Float endHalfBot =  new Point2D.Float((float)endHalf.getX() + DELTA, (float)endHalf.getY());
-		final Point2D.Float endHalfTop = new Point2D.Float((float)endHalf.getX() + DELTA + OFFSET,(float)endHalf.getY() + HEIGHT);
-		final Point2D.Float startHalf = this.computeStartDiagRect(endHalfBot, endHalfTop);
-		this.drawHopRect(gl, startHalf, outline, fill);
-		this.drawHopRect(gl, new Point2D.Float((float)startHalf.getX() - OFFSET, (float)startHalf.getY() - HEIGHT), outline, fill);
-
-		// Draw the rect in the middle
-		final Point2D.Float endSecondHalf = new Point2D.Float((float)startRect.getX() + DELTA*4, (float)startRect.getY());
-		this.drawHopRect(gl, endSecondHalf, outline, fill);
-
-		// Draw the second two in the middle
-		final Point2D.Float endSecHalfBot =  new Point2D.Float((float)endSecondHalf.getX() + DELTA, (float)endSecondHalf.getY());
-		final Point2D.Float endSecHalfTop = new Point2D.Float((float)endSecondHalf.getX() + DELTA + OFFSET,(float)endSecondHalf.getY() + HEIGHT);
-		final Point2D.Float startSecHalf = this.computeStartDiagRect(endSecHalfBot, endSecHalfTop);
-		this.drawHopRect(gl, startSecHalf, outline, fill);
-		this.drawHopRect(gl, new Point2D.Float((float)startSecHalf.getX() - OFFSET, (float)startSecHalf.getY() - HEIGHT), outline, fill);
-
-		// Draw last rect
-		this.drawHopRect(gl, new Point2D.Float((float)startRect.getX() + DELTA*6, (float)startRect.getY()), outline, fill);
-	}
-
-	/* Draw a single hopscotch rectangle
-	 * @param gl: the GL context
-	 * @param sourcePoint: Bottom left point in rect
-	 * @param outlineColor: outline color
-	 * @param fillColor: Fill color of rect
-	 */
-	private void drawHopRect(GL2 gl, Point2D sourcePoint, float[] outlineColor, float[] fillColor)
-	{
-		// Define dimensions
-		final float DELTA = 0.1f;
-		final float OFFSET = 0.015f;
-		final float HEIGHT = DELTA;
-		final float LINE_WIDTH = 3.0f;
-
-		// Define vertices and outline
-		final Point2D.Float one = (Point2D.Float)sourcePoint;
-		final Point2D.Float two =  new Point2D.Float((float)one.getX() + DELTA, (float)one.getY());
-		final Point2D.Float three = new Point2D.Float((float)one.getX() + DELTA + OFFSET,(float)one.getY() + HEIGHT);
-		final Point2D.Float four = new Point2D.Float((float)one.getX() + OFFSET, (float)one.getY() + HEIGHT);
-		Utils.drawQuad(gl, one, two, three, four, fillColor);
-		Utils.drawLine(gl, one, two, outlineColor, LINE_WIDTH);
-		Utils.drawLine(gl, two, three, outlineColor, LINE_WIDTH);
-		Utils.drawLine(gl, three, four, outlineColor, LINE_WIDTH);
-		Utils.drawLine(gl, four, one, outlineColor, LINE_WIDTH);
-	}
-
-	/* Draw the grass background
-	 * @param gl: GL context
-	 */
-	private void drawGrass(GL2 gl)
-	{
-		// Define points and draw with gradient
-		final Point2D.Float one = new Point2D.Float(MIN_X, GRASS_LIM);
-		final Point2D.Float two = new Point2D.Float(MAX_X, GRASS_LIM);
-		final Point2D.Float three = new Point2D.Float(MAX_X, ROAD_LIM);
-		final Point2D.Float four = new Point2D.Float(MIN_X, ROAD_LIM);
-		final float[] purple = new float[]{81f/255f, 65f/255f, 63f/255f};
-		final float[] green = new float[]{98f/255f, 142f/255f, 84f/255f};
-		Utils.drawQuadGradient(gl, one, two, three, four, purple, green);
-	}
-
-	//*********************************************//
-	// Three change equations for Lorenz equations //
-	//*********************************************//
-	private double dx(double x, double y, double z)
-	{
-		return -10*(x - y);
-	}
-
-	private double dy(double x, double y, double z)
-	{
-		return -x*z + 28*x - y;
-	}
-
-	private double dz(double x, double y, double z)
-	{
-		return x*y - 8*z/3;
-	}
-
-	/* Draw galazy using Lorenz equations
-	 * @param gl: The GL context
-	 */
-	private void drawGalaxy(GL2 gl)
-	{
-		// Start point for galaxy
-		float x = 0.5f;
-		float y = 0.9f;
-		float z = 1f;
-		// Draw as points 
-		gl.glBegin(gl.GL_POINTS);
-		gl.glColor3f(0.8f, 0.8f, 0.8f);
-		// Time lapse
-		float dt = 0.01f;
-		// Draw 20000 points
-		for(int i=0;i<20000;i++)
-		{
-			// Define new point as change from 
-			// previous point
-			x += (float)dx(x,y,z)*dt;
-			y += (float)dy(x,y,z)*dt;
-			z += (float)dz(x,y,z)*dt;
-			gl.glVertex2f(0.05f*x, 0.05f*y);
-		}
-		gl.glEnd();
-	}
-
 	/* Draw the kite and string
 	 * @param gl: The GL context
 	 */
@@ -417,7 +244,7 @@ public final class Homework03
 
 		// Draw pieces of the string one at a time
 		final float[] GRAY = new float[]{0.8f, 0.8f, 0.8f};
-		Point2D.Float start = new Point2D.Float(MAX_X - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f);
+		Point2D.Float start = new Point2D.Float(MAX.getFloatX() - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f);
 		Point2D.Float end = new Point2D.Float((float)start.getX() - 0.2f, (float)start.getY() + 0.15f);
 		Utils.drawLine(gl, start, end, GRAY, 2.0f);
 		start = end;
@@ -475,21 +302,6 @@ public final class Homework03
 		// this.drawLine(gl, from, to, GRAY, 5.0f, 0.3f);
 	}
 
-	/* Draw the sky background
-	 * @param gl: The GL context
-	 */
-	private void drawSky(GL2 gl)
-	{
-		final Point2D.Float one = new Point2D.Float(MIN_X, MAX_Y);
-		final Point2D.Float two = new Point2D.Float(MAX_X, MAX_Y);
-		final Point2D.Float three = new Point2D.Float(MAX_X, GRASS_LIM);
-		final Point2D.Float four = new Point2D.Float(MIN_X, GRASS_LIM);
-		final float[] purple = new float[]{12f/255f, 18f/255f, 30f/255f};
-		final float[] green = new float[]{144f/255f, 129f/255f, 100f/255f};
-		// Draw with gradient
-		Utils.drawQuadGradient(gl, one, two, three, four, purple, green);
-	}
-
 	/* Draw the moon object
 	 * @param gl: The GL context
 	 */
@@ -497,8 +309,8 @@ public final class Homework03
 	{
 		final float[] WHITE = new float[]{255f, 255f, 255f};
 		final float[] DARK_GRAY = new float[]{81f/255f, 82f/255f, 98f/255f};
-		final Point2D.Float center = new Point2D.Float(MIN_X + 0.3f, 0.7f);
-		final Point2D.Float small_center = new Point2D.Float(MIN_X + 0.35f, 0.72f);
+		final Point2D.Float center = new Point2D.Float(MIN.getFloatX() + 0.3f, 0.7f);
+		final Point2D.Float small_center = new Point2D.Float(MIN.getFloatX() + 0.35f, 0.72f);
 		// Draw a background white circle, then another dark gray one on top
 		Utils.drawCircle(gl, center, 0.2f, 0.0, 360.0, WHITE, false);
 		Utils.drawCircle(gl, small_center, 0.16f, 0.0, 360f, DARK_GRAY, false);
@@ -519,7 +331,7 @@ public final class Homework03
 		final float[] BLACK = new float[]{0f, 0f, 0f};
 
 		// Draw outline and chimney
-		final Point2D.Float houseStart = new Point2D.Float(MIN_X + 0.34f, ROAD_LIM + 0.01f);
+		final Point2D.Float houseStart = new Point2D.Float(MIN.getFloatX() + 0.34f, ROAD_LIM + 0.01f);
 		final Point2D.Float right_bot = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY());
 		final Point2D.Float right_top = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY() + HEIGHT);
 		final Point2D.Float left_top = new Point2D.Float((float)houseStart.getX(), (float)houseStart.getY() + HEIGHT);
@@ -562,7 +374,7 @@ public final class Homework03
 		final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
 
 		// Draw the outline andchimney
-		final Point2D.Float houseStart = new Point2D.Float(MAX_X - 2*0.075f - 0.5f - 0.02f, ROAD_LIM + 0.01f);
+		final Point2D.Float houseStart = new Point2D.Float(MAX.getFloatX() - 2*0.075f - 0.5f - 0.02f, ROAD_LIM + 0.01f);
 		final Point2D.Float right_bot = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY());
 		final Point2D.Float right_top = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY() + HEIGHT);
 		final Point2D.Float left_top = new Point2D.Float((float)houseStart.getX(), (float)houseStart.getY() + HEIGHT);
@@ -901,16 +713,6 @@ public final class Homework03
 		Utils.drawLine(gl, top_right, top_left, BLACK);
 		Utils.drawLine(gl, top_left, start, BLACK);
 		Utils.drawCircle(gl, knob_center, 0.01f, 0.0f, 360f, LIGHT_GRAY, true);
-	}
-
-	/*
-	 * Compute the point to start the stacked hopscotch rect.
-	 */
-	private Point2D.Float computeStartDiagRect(Point2D start, Point2D end)
-	{
-		float rise = (float)(end.getY() - start.getY()) / 2.0f;
-		float run = (float)(end.getX() - start.getX()) / 2.0f;
-		return new Point2D.Float((float)start.getX() + run, (float)start.getY() + rise);
 	}
 }
 
