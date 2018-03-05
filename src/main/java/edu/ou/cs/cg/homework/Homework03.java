@@ -17,6 +17,7 @@ package edu.ou.cs.cg.homework;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 import javax.media.opengl.*;
@@ -70,6 +71,12 @@ public final class Homework03
 	private static GreenHouse greenHouse = new GreenHouse(MIN, MAX, ROAD_LIM);
 	private static BrownHouse leftBrownHouse = new BrownHouse(MIN, MAX, ROAD_LIM, new Point(0.1f, ROAD_LIM + 0.1f), true, false);
 	private static BrownHouse rightBrownHouse = new BrownHouse(MIN, MAX, ROAD_LIM, new Point(MAX.getFloatX() - 2*0.075f - 0.5f - 0.02f, ROAD_LIM + 0.01f), false, true);
+	private static FenceLine farLeft = new FenceLine();
+	private static FenceLine leftGreen = new FenceLine();
+	private static FenceLine rightLeftSide = new FenceLine();
+	private static FenceLine farRight = new FenceLine();
+	private static FenceLine leftSecond = new FenceLine();
+	private static ArrayList<FenceLine> fences = new ArrayList<FenceLine>();
 
 	//**********************************************************************
 	// Main
@@ -98,11 +105,29 @@ public final class Homework03
 			});
 
 		canvas.addGLEventListener(new Homework03());
-		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse));
+		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences));
 
 		FPSAnimator		animator = new FPSAnimator(canvas, 60);
 
 		animator.start();
+
+		for(int i = 0; i < 4; i++)
+		{
+			farLeft.addFencePost(new FencePost(false));
+			leftGreen.addFencePost(new FencePost(false));
+			leftSecond.addFencePost(new FencePost(false));
+			rightLeftSide.addFencePost(new FencePost(false));
+			rightLeftSide.addFencePost(new FencePost(true));
+		}
+
+		farRight.addFencePost(new FencePost(false));
+		farRight.addFencePost(new FencePost(true));
+
+		fences.add(farLeft);
+		fences.add(leftGreen);
+		fences.add(rightLeftSide);
+		fences.add(farRight);
+		fences.add(leftSecond);
 	}
 
 	//**********************************************************************
@@ -164,41 +189,43 @@ public final class Homework03
 		// Draw far left fence
 		for(float x = MIN.getFloatX() + 0.02f, count = 0; count < 4; x += 0.075f, count++)
 		{
-			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
-			this.drawFencePost(gl, start);
+			final Point start = new Point(x, ROAD_LIM + 0.01f);
+			farLeft.getPosts().get((int)count).update(gl, start);
 		}
 
 		// Draw right side fence against the left side of the green house
 		for(float x = MIN.getFloatX() + 0.86f, count = 0; count < 4; x += 0.075f, count++)
 		{
-			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
-			this.drawFencePost(gl, start);
+			final Point start = new Point(x, ROAD_LIM + 0.01f);
+			leftGreen.getPosts().get((int)count).update(gl, start);
 		}
 
 		// Draw the right side fence on the other side of the right house
 		for(float x = MIN.getFloatX() + 1.18f, count = 0; count < 4; x += 0.075f, count++)
 		{
-			final Point2D.Float start = new Point2D.Float(x, ROAD_LIM + 0.01f);
-			this.drawFencePost(gl, start);
+			final Point start = new Point(x, ROAD_LIM + 0.01f);
+			leftSecond.getPosts().get((int)count).update(gl, start);
 		}
 
 		// Draw far right fence
-		final Point2D.Float first = new Point2D.Float(MAX.getFloatX() - 2*0.075f - 0.02f, ROAD_LIM + 0.01f);
-		this.drawFencePost(gl, first);
-		final Point2D.Float reflected = new Point2D.Float(MAX.getFloatX() - 0.075f - 0.02f, ROAD_LIM + 0.01f);
-		this.drawReflectedFencePost(gl, reflected);
+		final Point first = new Point(MAX.getFloatX() - 2*0.075f - 0.02f, ROAD_LIM + 0.01f);
+		farRight.getPosts().get(0).update(gl, first);
+		final Point reflected = new Point(MAX.getFloatX() - 0.075f - 0.02f, ROAD_LIM + 0.01f);
+		farRight.getPosts().get(1).update(gl, reflected);
 
 		leftBrownHouse.update(gl);
 
 		rightBrownHouse.update(gl);
 
 		// Draw the groups of reflected fence posts
+		int post = 0;
 		for(float x = MAX.getFloatX() - 3*0.075f - 0.02f-0.5f; x > MAX.getFloatX() - 10*0.075f - 0.02f-0.5f; x -= 2*0.075f)
 		{
-			final Point2D.Float first_left = new Point2D.Float(x - 0.075f, ROAD_LIM + 0.01f);
-			this.drawFencePost(gl, first_left);
-			final Point2D.Float reflected_left = new Point2D.Float(x, ROAD_LIM + 0.01f);
-			this.drawReflectedFencePost(gl, reflected_left);
+			final Point first_left = new Point(x - 0.075f, ROAD_LIM + 0.01f);
+			rightLeftSide.getPosts().get(post).update(gl, first_left);
+			final Point reflected_left = new Point(x, ROAD_LIM + 0.01f);
+			rightLeftSide.getPosts().get(post + 1).update(gl, reflected_left);
+			post += 2;
 		}
 
 		// // Draw eight point starts in the sky
@@ -300,56 +327,6 @@ public final class Homework03
 		// final Point2D.Float from = new Point2D.Float((float)vert[vert.length - 2], (float)vert[vert.length - 1]);
 		// final Point2D.Float to = new Point2D.Float((float)vert[0], (float)vert[1]);
 		// this.drawLine(gl, from, to, GRAY, 5.0f, 0.3f);
-	}
-	
-
-	/* Draw a fence post
-	 * @param gl: The GL context
-	 * @param source: The bottom left corner
-	 */
-	private void drawFencePost(GL2 gl, Point2D source)
-	{
-		// Define the dimensions
-		final float WIDTH = 0.075f;
-		final float HEIGHT = 0.4f;
-
-		// Define the colors
-		final float[] BEIGE = new float[]{0.9f, 0.837f, 0.735f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-
-		// Define and outline
-		final Point2D.Float start = (Point2D.Float)source;
-		final Point2D.Float right_bot = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT);
-		final Point2D.Float left_top = new Point2D.Float((float)start.getX(), (float)right_top.getY() - 0.05f);
-		Utils.drawQuad(gl, start, right_bot, right_top, left_top, BEIGE);
-		Utils.drawLine(gl, start, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, right_top, BLACK);
-		Utils.drawLine(gl, right_top, left_top, BLACK);
-		Utils.drawLine(gl, left_top, start, BLACK);
-	}
-
-	/*
-	 * Does the same thing as the above method, but
-	 * reflects the fence post.
-	 */
-	private void drawReflectedFencePost(GL2 gl, Point2D source)
-	{
-		final float WIDTH = 0.075f;
-		final float HEIGHT = 0.4f;
-
-		final float[] BEIGE = new float[]{0.9f, 0.837f, 0.735f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-
-		final Point2D.Float start = (Point2D.Float)source;
-		final Point2D.Float right_bot = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT - 0.05f);
-		final Point2D.Float left_top = new Point2D.Float((float)start.getX(), (float)start.getY() + HEIGHT);
-		Utils.drawQuad(gl, start, right_bot, right_top, left_top, BEIGE);
-		Utils.drawLine(gl, start, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, right_top, BLACK);
-		Utils.drawLine(gl, right_top, left_top, BLACK);
-		Utils.drawLine(gl, left_top, start, BLACK);
 	}
 }
 

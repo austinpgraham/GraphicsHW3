@@ -4,7 +4,9 @@ import javax.media.opengl.*;
 
 public class Galaxy extends Drawable
 {
-    private final int STAR_COUNT = 20000;
+	private int STAR_COUNT = 0;
+	private float redAmount = 0.8f;
+	private boolean decreasing = true;
 
     //*********************************************//
 	// Three change equations for Lorenz equations //
@@ -35,7 +37,7 @@ public class Galaxy extends Drawable
 		float z = 1f;
 		// Draw as points 
 		gl.glBegin(GL2.GL_POINTS);
-		gl.glColor3f(0.8f, 0.8f, 0.8f);
+		gl.glColor3f(this.redAmount, 0.5f, 0.5f);
 		// Time lapse
 		float dt = 0.01f;
 		// Draw 20000 points
@@ -53,6 +55,26 @@ public class Galaxy extends Drawable
     
     public void update(GL2 gl)
     {
+		this.STAR_COUNT +=10;
+		if (this.STAR_COUNT >= 20000)
+		{
+			this.STAR_COUNT = 0;
+		}
+
+		if(this.decreasing)
+		{
+			this.redAmount -= 0.001f;
+		}
+		else
+		{
+			this.redAmount += 0.001f;
+		}
+
+		if(this.redAmount < 0f || this.redAmount > 0.8f)
+		{
+			this.decreasing = !this.decreasing;
+		}
+		
         this.drawGalaxy(gl);
     }
 }

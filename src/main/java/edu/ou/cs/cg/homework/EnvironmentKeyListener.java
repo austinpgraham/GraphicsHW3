@@ -1,6 +1,7 @@
 package edu.ou.cs.cg.homework;
 
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 
 public class EnvironmentKeyListener implements KeyListener
@@ -10,16 +11,18 @@ public class EnvironmentKeyListener implements KeyListener
     private GreenHouse gh;
     private BrownHouse lbh;
     private BrownHouse rbh;
+    private ArrayList<FenceLine> fences;
 
     private boolean shiftPressed = false;
 
-    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh)
+    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh, ArrayList<FenceLine> fences)
     {
         this.hop = hop;
         this.road = road;
         this.gh = gh;
         this.lbh = lbh;
         this.rbh = rbh;
+        this.fences = fences;
     }
 
     public void keyTyped(KeyEvent e) 
@@ -46,6 +49,18 @@ public class EnvironmentKeyListener implements KeyListener
                 this.lbh.toggleWindows();
                 this.rbh.toggleWindows();
                 this.gh.toggleWindows();
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                for(FenceLine line: this.fences)
+                {
+                    line.adjustHeight(-0.01f);
+                }
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                for(FenceLine line: this.fences)
+                {
+                    line.adjustHeight(0.01f);
+                }
                 break;
         } 
     }
