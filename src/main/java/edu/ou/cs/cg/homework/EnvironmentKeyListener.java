@@ -7,13 +7,19 @@ public class EnvironmentKeyListener implements KeyListener
 {
     private Hopscotch hop;
     private Road road;
+    private GreenHouse gh;
+    private BrownHouse lbh;
+    private BrownHouse rbh;
 
     private boolean shiftPressed = false;
 
-    public EnvironmentKeyListener(Hopscotch hop, Road road)
+    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh)
     {
         this.hop = hop;
         this.road = road;
+        this.gh = gh;
+        this.lbh = lbh;
+        this.rbh = rbh;
     }
 
     public void keyTyped(KeyEvent e) 
@@ -35,6 +41,11 @@ public class EnvironmentKeyListener implements KeyListener
                 break;
             case KeyEvent.VK_SHIFT:
                 this.shiftPressed = false;
+                break;
+            case KeyEvent.VK_W:
+                this.lbh.toggleWindows();
+                this.rbh.toggleWindows();
+                this.gh.toggleWindows();
                 break;
         } 
     }

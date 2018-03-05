@@ -1,23 +1,19 @@
 package edu.ou.cs.cg.homework;
 
-import java.awt.geom.*;
 import javax.media.opengl.*;
 
-public class Road extends Drawable
+public class Road extends DimensionedDrawable
 {
-    private Point min_dim;
-    private Point max_dim;
     private final float HEIGHT;
     private final float DELTA;
     private final float OFFSET;
 
     public Road(Point min, Point max)
     {
+        super(min, max);
         this.HEIGHT = 0.4f;
         this.DELTA = 0.2f;
         this.OFFSET = 0.05f;
-        this.min_dim = min;
-        this.max_dim = max;
     }
 
     /* Draw the road
@@ -49,6 +45,7 @@ public class Road extends Drawable
 		}
     }
     
+    @Override
     public void update(GL2 gl)
     {
         this.drawRoad(gl);

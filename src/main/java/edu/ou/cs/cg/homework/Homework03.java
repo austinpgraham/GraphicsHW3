@@ -66,6 +66,10 @@ public final class Homework03
 
 	private static Background background = new Background(MIN, MAX, GRASS_LIM, ROAD_LIM);
 	private static Hopscotch hop = new Hopscotch(ROAD_LIM);
+	private static Moon moon = new Moon(MIN, MAX);
+	private static GreenHouse greenHouse = new GreenHouse(MIN, MAX, ROAD_LIM);
+	private static BrownHouse leftBrownHouse = new BrownHouse(MIN, MAX, ROAD_LIM, new Point(0.1f, ROAD_LIM + 0.1f), true, false);
+	private static BrownHouse rightBrownHouse = new BrownHouse(MIN, MAX, ROAD_LIM, new Point(MAX.getFloatX() - 2*0.075f - 0.5f - 0.02f, ROAD_LIM + 0.01f), false, true);
 
 	//**********************************************************************
 	// Main
@@ -94,7 +98,7 @@ public final class Homework03
 			});
 
 		canvas.addGLEventListener(new Homework03());
-		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad()));
+		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse));
 
 		FPSAnimator		animator = new FPSAnimator(canvas, 60);
 
@@ -152,12 +156,10 @@ public final class Homework03
 		background.update(gl);
 
 		hop.update(gl);
-		
-		// Draw the moon
-		this.drawMoon(gl);
 
-		// Draw the green house
-		this.drawGreenHouse(gl);
+		moon.update(gl);
+
+		greenHouse.update(gl);
 
 		// Draw far left fence
 		for(float x = MIN.getFloatX() + 0.02f, count = 0; count < 4; x += 0.075f, count++)
@@ -186,11 +188,9 @@ public final class Homework03
 		final Point2D.Float reflected = new Point2D.Float(MAX.getFloatX() - 0.075f - 0.02f, ROAD_LIM + 0.01f);
 		this.drawReflectedFencePost(gl, reflected);
 
-		// Draw right hand brown house
-		this.drawRightBrownHouse(gl);
+		leftBrownHouse.update(gl);
 
-		// Draw the left brown house
-		this.drawLeftBrownHouse(gl);
+		rightBrownHouse.update(gl);
 
 		// Draw the groups of reflected fence posts
 		for(float x = MAX.getFloatX() - 3*0.075f - 0.02f-0.5f; x > MAX.getFloatX() - 10*0.075f - 0.02f-0.5f; x -= 2*0.075f)
@@ -201,18 +201,18 @@ public final class Homework03
 			this.drawReflectedFencePost(gl, reflected_left);
 		}
 
-		// Draw eight point starts in the sky
-		final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-		final Point2D.Float star1 = new Point2D.Float(1.0f, MAX.getFloatY() - 0.2f);
-		this.drawEightPointStar(gl, star1, 0.08f, YELLOW, 1f);
-		final Point2D.Float star2 = new Point2D.Float(1.3f, MAX.getFloatY() - 0.3f);
-		this.drawEightPointStar(gl, star2, 0.08f, YELLOW, 1f);
-		final Point2D.Float star3 = new Point2D.Float(1.6f, MAX.getFloatY() - 0.25f);
-		this.drawEightPointStar(gl, star3, 0.08f, YELLOW, 1f);
-		final Point2D.Float star4 = new Point2D.Float(1.7f, MAX.getFloatY() - 0.5f);
-		this.drawEightPointStar(gl, star4, 0.08f, YELLOW, 0.5f);
-		final Point2D.Float star5 = new Point2D.Float(1.55f, MAX.getFloatY() - 0.7f);
-		this.drawEightPointStar(gl, star5, 0.08f, YELLOW, 0.3f);
+		// // Draw eight point starts in the sky
+		// final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
+		// final Point2D.Float star1 = new Point2D.Float(1.0f, MAX.getFloatY() - 0.2f);
+		// this.drawEightPointStar(gl, star1, 0.08f, YELLOW, 1f);
+		// final Point2D.Float star2 = new Point2D.Float(1.3f, MAX.getFloatY() - 0.3f);
+		// this.drawEightPointStar(gl, star2, 0.08f, YELLOW, 1f);
+		// final Point2D.Float star3 = new Point2D.Float(1.6f, MAX.getFloatY() - 0.25f);
+		// this.drawEightPointStar(gl, star3, 0.08f, YELLOW, 1f);
+		// final Point2D.Float star4 = new Point2D.Float(1.7f, MAX.getFloatY() - 0.5f);
+		// this.drawEightPointStar(gl, star4, 0.08f, YELLOW, 0.5f);
+		// final Point2D.Float star5 = new Point2D.Float(1.55f, MAX.getFloatY() - 0.7f);
+		// this.drawEightPointStar(gl, star5, 0.08f, YELLOW, 0.3f);
 
 		// Draw the kite and string
 		this.drawKite(gl);
@@ -302,250 +302,6 @@ public final class Homework03
 		// this.drawLine(gl, from, to, GRAY, 5.0f, 0.3f);
 	}
 
-	/* Draw the moon object
-	 * @param gl: The GL context
-	 */
-	private void drawMoon(GL2 gl)
-	{
-		final float[] WHITE = new float[]{255f, 255f, 255f};
-		final float[] DARK_GRAY = new float[]{81f/255f, 82f/255f, 98f/255f};
-		final Point2D.Float center = new Point2D.Float(MIN.getFloatX() + 0.3f, 0.7f);
-		final Point2D.Float small_center = new Point2D.Float(MIN.getFloatX() + 0.35f, 0.72f);
-		// Draw a background white circle, then another dark gray one on top
-		Utils.drawCircle(gl, center, 0.2f, 0.0, 360.0, WHITE, false);
-		Utils.drawCircle(gl, small_center, 0.16f, 0.0, 360f, DARK_GRAY, false);
-	}
-
-	/* Draw the green house
-	 * @param gl: The GL context
-	 */
-	private void drawGreenHouse(GL2 gl)
-	{
-		// Define the dimensions
-		final float WIDTH = 0.5f;
-		final float HEIGHT = 0.5f;
-
-		// Define the colors
-		final float[] DARK_GREEN = new float[]{85f/255f, 107f/255f, 47f/255f};
-		final float[] DARK_GRAY = new float[]{0.3f, 0.3f, 0.3f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-
-		// Draw outline and chimney
-		final Point2D.Float houseStart = new Point2D.Float(MIN.getFloatX() + 0.34f, ROAD_LIM + 0.01f);
-		final Point2D.Float right_bot = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY() + HEIGHT);
-		final Point2D.Float left_top = new Point2D.Float((float)houseStart.getX(), (float)houseStart.getY() + HEIGHT);
-		this.drawChimney(gl, new Point2D.Float((float)houseStart.getX() + 0.35f, (float)houseStart.getY()), true);
-		Utils.drawQuad(gl, houseStart, right_bot, right_top, left_top, DARK_GREEN);
-		Utils.drawLine(gl, houseStart, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, right_top, BLACK);
-		Utils.drawLine(gl, left_top, houseStart, BLACK);
-
-		// Draw the window and the door
-		final Point2D.Float windowStart = new Point2D.Float((float)houseStart.getX() + 0.3f, (float)houseStart.getY() + HEIGHT / 2.0f + 0.05f);
-		final Point2D.Float doorStart = new Point2D.Float((float)houseStart.getX()+0.1f, ROAD_LIM + 0.01f);
-		this.drawWindow(gl, windowStart);
-		this.drawDoor(gl, doorStart);
-
-		// Draw the roof with outline
-		final Point2D.Float roofSource = new Point2D.Float((float)houseStart.getX() + WIDTH / 2.0f, 0.2f);
-		Utils.drawTriangle(gl, roofSource, left_top, right_top, DARK_GRAY);
-		Utils.drawLine(gl, roofSource, left_top, BLACK);
-		Utils.drawLine(gl, roofSource, right_top, BLACK);
-		Utils.drawLine(gl, right_top, left_top, BLACK);
-		Utils.drawLine(gl, roofSource, new Point2D.Float((float)left_top.getX() + WIDTH / 3.0f, (float)left_top.getY()), BLACK);
-		Utils.drawLine(gl, roofSource, new Point2D.Float((float)left_top.getX() + WIDTH / 3.0f * 2.0f, (float)left_top.getY()), BLACK);
-		Utils.drawLine(gl, roofSource, new Point2D.Float((float)left_top.getX() + WIDTH / 6.0f, (float)left_top.getY()), BLACK);
-		Utils.drawLine(gl, roofSource, new Point2D.Float((float)left_top.getX() + WIDTH / 6.0f * 5.0f, (float)left_top.getY()), BLACK);
-	}
-
-	/* Draw the brown house on the right
-	 * @param gl: The GL context
-	 */
-	private void drawRightBrownHouse(GL2 gl)
-	{
-		// Define dimensions
-		final float WIDTH = 0.5f;
-		final float HEIGHT = 0.5f;
-
-		// Define the colors
-		final float[] BROWN = new float[]{153f/255f, 76f/255f, 0f/255f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-		final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-
-		// Draw the outline andchimney
-		final Point2D.Float houseStart = new Point2D.Float(MAX.getFloatX() - 2*0.075f - 0.5f - 0.02f, ROAD_LIM + 0.01f);
-		final Point2D.Float right_bot = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY() + HEIGHT);
-		final Point2D.Float left_top = new Point2D.Float((float)houseStart.getX(), (float)houseStart.getY() + HEIGHT);
-		this.drawChimney(gl, new Point2D.Float((float)houseStart.getX() + 0.06f, ROAD_LIM + 0.01f), false);
-		Utils.drawQuad(gl, houseStart, right_bot, right_top, left_top, BROWN);
-		Utils.drawLine(gl, houseStart, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, right_top, BLACK);
-		Utils.drawLine(gl, left_top, houseStart, BLACK);
-
-		// Draw the triangle
-		final Point2D.Float roofPoint = new Point2D.Float((float)houseStart.getX() + WIDTH / 2.0f, 0.2f);
-		Utils.drawTriangle(gl, left_top, roofPoint, right_top, BROWN);
-		Utils.drawLine(gl, left_top, roofPoint, BLACK);
-		Utils.drawLine(gl, roofPoint, right_top, BLACK);
-
-		// Draw the door
-		final Point2D.Float doorStart = new Point2D.Float((float)houseStart.getX() + 0.02f, ROAD_LIM + 0.01f);
-		this.drawDoor(gl, doorStart);
-		final Point2D.Float firstWindow = new Point2D.Float((float)houseStart.getX() + 0.22f, ROAD_LIM + 0.12f);
-		final Point2D.Float secondWindow = new Point2D.Float((float)houseStart.getX() + 0.22f + 0.12f + 0.02f, ROAD_LIM + 0.12f);
-		// Draw the windows
-		this.drawWindow(gl, firstWindow);
-		this.drawWindow(gl, secondWindow);
-
-		// Draw the symbol on the door
-		final Point2D.Float doorSymbol = new Point2D.Float((float)doorStart.getX()+0.06f, ROAD_LIM + 0.2f);
-		Utils.drawCircle(gl, doorSymbol, 0.045f, 0.0f, 360f, 45, YELLOW, true);
-	}
-
-	/* The the brown house on the left
-	 * @param gl: The GL context
-	 */
-	private void drawLeftBrownHouse(GL2 gl)
-	{
-		// Define the dimensions
-		final float WIDTH = 0.5f;
-		final float HEIGHT = 0.5f;
-
-		// Define the colors
-		final float[] BROWN = new float[]{153f/255f, 76f/255f, 0f/255f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-		final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-
-		// Draw the outline and chimney
-		final Point2D.Float houseStart = new Point2D.Float(0.1f, ROAD_LIM + 0.1f);
-		final Point2D.Float right_bot = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)houseStart.getX() + WIDTH, (float)houseStart.getY() + HEIGHT);
-		final Point2D.Float left_top = new Point2D.Float((float)houseStart.getX(), (float)houseStart.getY() + HEIGHT);
-		this.drawChimney(gl, new Point2D.Float((float)houseStart.getX() + 0.06f, ROAD_LIM + 0.1f), false);
-		Utils.drawQuad(gl, houseStart, right_bot, right_top, left_top, BROWN);
-		Utils.drawLine(gl, houseStart, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, right_top, BLACK);
-		Utils.drawLine(gl, left_top, houseStart, BLACK);
-		// Draw the rooftop
-		final Point2D.Float roofPoint = new Point2D.Float((float)houseStart.getX() + WIDTH / 2.0f, 0.27f);
-		Utils.drawTriangle(gl, left_top, roofPoint, right_top, BROWN);
-		Utils.drawLine(gl, left_top, roofPoint, BLACK);
-		Utils.drawLine(gl, roofPoint, right_top, BLACK);
-		// Draw the star at the top
-		final Point2D.Float startPos = new Point2D.Float((float)roofPoint.getX(), (float)roofPoint.getY() - 0.15f);
-		this.drawFivePointStar(gl, startPos);
-		// Draw the door and windows
-		final Point2D.Float doorStart = new Point2D.Float((float)houseStart.getX() + 0.02f, ROAD_LIM + 0.1f);
-		this.drawDoor(gl, doorStart);
-		final Point2D.Float firstWindow = new Point2D.Float((float)houseStart.getX() + 0.22f, ROAD_LIM + 0.21f);
-		final Point2D.Float secondWindow = new Point2D.Float((float)houseStart.getX() + 0.22f + 0.12f + 0.02f, ROAD_LIM + 0.21f);
-		this.drawWindow(gl, firstWindow);
-		this.drawWindow(gl, secondWindow);
-	}
-
-	/* Draw a chimney
-	 * @param gl: The GL context
-	 * @param po: Bottom left corner
-	 * @param smoke: Draw with smoke
-	 */
-	private void drawChimney(GL2 gl, Point2D pos, boolean smoke)
-	{
-		// Define dimensions
-		final float WIDTH = 0.1f;
-		final float HEIGHT = 0.77f;
-
-		// Define colors
-		final float[] BROWN = new float[]{128f/255f, 0f/255f, 0f/255f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-
-		// Define outline and draw smoke if necessary
-		final Point2D.Float start = (Point2D.Float)pos;
-		final Point2D.Float bot_right = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY());
-		final Point2D.Float top_right = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT);
-		final Point2D.Float top_left = new Point2D.Float((float)start.getX(), (float)start.getY() + HEIGHT);
-		if(smoke)
-		{
-			this.drawSmoke(gl, new Point2D.Float((float)top_left.getX()+0.01f, (float)top_left.getY()), new Point2D.Float((float)top_right.getX()-0.01f, (float)top_right.getY()));
-		}
-		Utils.drawQuad(gl, start, bot_right, top_right, top_left, BROWN);
-		Utils.drawLine(gl, start, bot_right, BLACK);
-		Utils.drawLine(gl, bot_right, top_right, BLACK);
-		Utils.drawLine(gl, top_right, top_left, BLACK);
-		Utils.drawLine(gl, top_left, start, BLACK);
-	}
-
-	/* Draw a window object
-	 * @param gl: The GL context
-	 * @param pos: The bottom left corner
-	 */
-	private void drawWindow(GL2 gl, Point2D pos)
-	{
-		// Define the dimensions
-		final float DIM = 0.12f;
-		final float LINE_WIDTH = 3.0f;
-
-		// Define the colors
-		final float[] LIGHT_PURPLE = new float[]{230f/255f, 230f/255f, 250f/255f};
-		final float[] YELLOW = new float[]{1f, 250f/255f, 205f/255f};
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-
-		// Draw the outline of the window
-		final Point2D.Float start = (Point2D.Float)pos;
-		final Point2D.Float right_bot = new Point2D.Float((float)start.getX() + DIM, (float)start.getY());
-		final Point2D.Float right_top = new Point2D.Float((float)start.getX() + DIM, (float)start.getY() + DIM);
-		final Point2D.Float left_top = new Point2D.Float((float)start.getX(), (float)start.getY()+DIM);
-		final Point2D.Float top_middle = new Point2D.Float((float)left_top.getX() + DIM / 2.0f, (float)left_top.getY());
-		final Point2D.Float bot_middle = new Point2D.Float((float)start.getX() + DIM / 2.0f, (float)start.getY());
-		final Point2D.Float left_middle = new Point2D.Float((float)left_top.getX(), (float)left_top.getY() - DIM / 2.0f);
-		final Point2D.Float right_middle = new Point2D.Float((float)right_top.getX(), (float)right_top.getY() - DIM / 2.0f);
-		Utils.drawQuad(gl, start, right_bot, right_top, left_top, LIGHT_PURPLE);
-		Utils.drawTriangle(gl, start, right_bot, top_middle, YELLOW);
-		Utils.drawLine(gl, start, top_middle, BLACK);
-		Utils.drawLine(gl, top_middle, right_bot, BLACK);
-		Utils.drawLine(gl, start, right_bot, BLACK, LINE_WIDTH);
-		Utils.drawLine(gl, right_bot, right_top, BLACK, LINE_WIDTH);
-		Utils.drawLine(gl, right_top, left_top, BLACK, LINE_WIDTH);
-		Utils.drawLine(gl, left_top, start, BLACK, LINE_WIDTH);
-		Utils.drawLine(gl, left_middle, right_middle, BLACK, LINE_WIDTH);
-		Utils.drawLine(gl, top_middle, bot_middle, BLACK, LINE_WIDTH);
-	}
-
-	/* Draw a smoke column
-	 * @param gl: The GL context
-	 * @param left: The left start
-	 * @param right: The right start
-	 */
-	private void drawSmoke(GL2 gl, Point2D left, Point2D right)
-	{
-		double startX_left = left.getX();
-		double startY_left = left.getY();
-		double startX_right = right.getX();
-		double startY_right = right.getY();
-		gl.glBegin(gl.GL_QUAD_STRIP);
-		gl.glColor3f(0.5f, 0.5f, 0.5f);
-		gl.glVertex2d(left.getX(), left.getY());
-		gl.glVertex2d(right.getX(), right.getY());
-		gl.glVertex2d(startX_left, startY_left + 0.05f);
-		gl.glVertex2d(startX_right, startY_right + 0.05f);
-		gl.glVertex2d(startX_left + 0.03f, startY_left + 0.07f);
-		gl.glVertex2d(startX_right, startY_right + 0.07f);
-		gl.glVertex2d(startX_left + 0.04f, startY_left + 0.1f);
-		gl.glVertex2d(startX_right + 0.03f, startY_right + 0.1f);
-		gl.glVertex2d(startX_left + 0.05f, startY_left + 0.13f);
-		gl.glVertex2d(startX_right + 0.02f, startY_right + 0.13f);
-		gl.glVertex2d(startX_left + 0.01f, startY_left + 0.17f);
-		gl.glVertex2d(startX_right + 0.03f, startY_right + 0.17f);
-		gl.glVertex2d(startX_left + 0.03f, startY_left + 0.2f);
-		gl.glVertex2d(startX_right + 0.02f, startY_right + 0.2f);
-		gl.glVertex2d(startX_left + 0.05f, startY_left + 0.24f);
-		gl.glVertex2d(startX_right + 0.03f, startY_right + 0.24f);
-		gl.glVertex2d(startX_left + 0.07f, startY_left + 0.26f);
-		gl.glVertex2d(startX_right + 0.04f, startY_right + 0.26f);
-		gl.glEnd();
-	}
-
 	/* Draw a five point star
 	 * @param gl: The GL context
 	 * @param start: The middle of the star
@@ -596,46 +352,7 @@ public final class Homework03
 		gl.glEnd();
 	}
 
-	/* Draws the eight point starts at the top right.
-	 * @param gl: the GL2 Context
-	 * @param gl: the center of the star
-	 * @param radius: Larger radius of star points
-	 * @param color: Color of the star
-	 * @param alpha: Fade of star color
-	 */
-	private void drawEightPointStar(GL2 gl, Point2D center, float radius, float[] color, float alpha)
-	{
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-		final float SCALE = 0.4f;
-		int len = 16;
-		double[] vert = new double[36];
-		// Enable alpha blending
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-		gl.glColor4f(color[0], color[1], color[2], alpha);
-		// Get and draw center
-		gl.glVertex2d(center.getX(), center.getY());
-		double centx = center.getX();
-		double centy = center.getY();
-		// Draw outer points
-		for(double angle = 0, i = 0; angle <= 360; angle+=45f, i+= 4)
-		{
-			double x = centx + Math.cos(Math.toRadians(angle))*radius;
-			double y = centy + Math.sin(Math.toRadians(angle))*radius;
-			// Scale in the smaller points in the star
-			double in_x = centx + Math.cos(Math.toRadians(angle+22.5))*radius*SCALE;
-			double in_y = centy + Math.sin(Math.toRadians(angle+22.5))*radius*SCALE;
-			gl.glVertex2d(x,y);
-			gl.glVertex2d(in_x, in_y);
-			// DEPRACATED. Code is unused
-			vert[(int)i] = x;
-			vert[(int)i+1] = y;
-			vert[(int)i+2] = in_x;
-			vert[(int)i+3] = in_y;
-		}
-		gl.glEnd();
-	}
+	
 
 	/* Draw a fence post
 	 * @param gl: The GL context
@@ -684,35 +401,6 @@ public final class Homework03
 		Utils.drawLine(gl, right_bot, right_top, BLACK);
 		Utils.drawLine(gl, right_top, left_top, BLACK);
 		Utils.drawLine(gl, left_top, start, BLACK);
-	}
-
-	/* Draw a door
-	 * @param gl: The GL context
-	 * @param pos: The bottom left corner
-	 */
-	private void drawDoor(GL2 gl, Point2D pos)
-	{
-		// Define the dimensions
-		final float HEIGHT = 0.25f;
-		final float WIDTH = 0.13f;
-
-		// Define the colors
-		final float[] BLACK = new float[]{0f, 0f, 0f};
-		final float[] LIGHT_BROWN = new float[]{205f/255f, 133f/255f, 63f/255f};
-		final float[] LIGHT_GRAY = new float[]{0.75f, 0.75f, 0.75f};
-
-		// Outline and draw the door
-		final Point2D.Float start = (Point2D.Float)pos;
-		final Point2D.Float right_bot = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY());
-		final Point2D.Float top_right = new Point2D.Float((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT);
-		final Point2D.Float top_left = new Point2D.Float((float)start.getX(), (float)start.getY() + HEIGHT);
-		final Point2D.Float knob_center = new Point2D.Float((float)start.getX() + 0.015f, (float)start.getY() + HEIGHT / 2.0f);
-		Utils.drawQuad(gl, start, right_bot, top_right, top_left, LIGHT_BROWN);
-		Utils.drawLine(gl, start, right_bot, BLACK);
-		Utils.drawLine(gl, right_bot, top_right, BLACK);
-		Utils.drawLine(gl, top_right, top_left, BLACK);
-		Utils.drawLine(gl, top_left, start, BLACK);
-		Utils.drawCircle(gl, knob_center, 0.01f, 0.0f, 360f, LIGHT_GRAY, true);
 	}
 }
 

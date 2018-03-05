@@ -2,10 +2,8 @@ package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
-public class Background extends Drawable
+public class Background extends DimensionedDrawable
 {
-    private Point min_dim;
-    private Point max_dim;
     private float grass_lim;
     private float road_lim;
 
@@ -14,8 +12,7 @@ public class Background extends Drawable
 
     public Background(Point min_dim, Point max_dim, float grass_lim, float road_lim)
     {
-        this.min_dim = min_dim;
-        this.max_dim = max_dim;
+        super(min_dim, max_dim);
         this.grass_lim = grass_lim;
         this.road_lim = road_lim;
 
@@ -63,6 +60,7 @@ public class Background extends Drawable
         return this.road;
     }
 
+    @Override
     public void update(GL2 gl)
     {
         this.drawSky(gl);
