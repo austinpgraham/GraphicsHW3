@@ -2,6 +2,7 @@ package edu.ou.cs.cg.homework;
 
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 
 public class EnvironmentKeyListener implements KeyListener
@@ -12,10 +13,11 @@ public class EnvironmentKeyListener implements KeyListener
     private BrownHouse lbh;
     private BrownHouse rbh;
     private ArrayList<FenceLine> fences;
+    private Kite kite;
 
     private boolean shiftPressed = false;
 
-    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh, ArrayList<FenceLine> fences)
+    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh, ArrayList<FenceLine> fences, Kite kite)
     {
         this.hop = hop;
         this.road = road;
@@ -23,6 +25,7 @@ public class EnvironmentKeyListener implements KeyListener
         this.lbh = lbh;
         this.rbh = rbh;
         this.fences = fences;
+        this.kite = kite;
     }
 
     public void keyTyped(KeyEvent e) 
@@ -73,6 +76,33 @@ public class EnvironmentKeyListener implements KeyListener
                 {
                     line.adjustHeight(0.01f);
                 }
+                break;
+            case KeyEvent.VK_1:
+                this.kite.setWingCount(1);
+                break;
+            case KeyEvent.VK_2:
+                this.kite.setWingCount(2);
+                break;
+            case KeyEvent.VK_3:
+                this.kite.setWingCount(3);
+                break;
+            case KeyEvent.VK_4:
+                this.kite.setWingCount(4);
+                break;
+            case KeyEvent.VK_5:
+                this.kite.setWingCount(5);
+                break;
+            case KeyEvent.VK_6:
+                this.kite.setWingCount(6);
+                break;
+            case KeyEvent.VK_7:
+                this.kite.setWingCount(7);
+                break;
+            case KeyEvent.VK_8:
+                this.kite.setWingCount(8);
+                break;
+            case KeyEvent.VK_9:
+                this.kite.setWingCount(9);
                 break;
         } 
     }
