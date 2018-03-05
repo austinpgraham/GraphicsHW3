@@ -61,8 +61,8 @@ public class BrownHouse extends House
         {
             // Draw the star at the top
             final Point startPos = new Point((float)roofPoint.getX(), (float)roofPoint.getY() - 0.15f);
-            Star star = new Star(5, 1.0f);
-            star.update(gl, startPos);
+            Star star = new Star(5, 1.0f, startPos);
+            star.update(gl, null);
         }
 
         if(this.hasDoorSymbol)

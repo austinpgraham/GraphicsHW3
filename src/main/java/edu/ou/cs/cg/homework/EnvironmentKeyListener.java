@@ -2,7 +2,6 @@ package edu.ou.cs.cg.homework;
 
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 
 public class EnvironmentKeyListener implements KeyListener
@@ -14,10 +13,11 @@ public class EnvironmentKeyListener implements KeyListener
     private BrownHouse rbh;
     private ArrayList<FenceLine> fences;
     private Kite kite;
+    private StarCollection stars;
 
     private boolean shiftPressed = false;
 
-    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh, ArrayList<FenceLine> fences, Kite kite)
+    public EnvironmentKeyListener(Hopscotch hop, Road road, GreenHouse gh, BrownHouse lbh, BrownHouse rbh, ArrayList<FenceLine> fences, Kite kite, StarCollection stars)
     {
         this.hop = hop;
         this.road = road;
@@ -26,6 +26,7 @@ public class EnvironmentKeyListener implements KeyListener
         this.rbh = rbh;
         this.fences = fences;
         this.kite = kite;
+        this.stars = stars;
     }
 
     public void keyTyped(KeyEvent e) 
@@ -103,6 +104,9 @@ public class EnvironmentKeyListener implements KeyListener
                 break;
             case KeyEvent.VK_9:
                 this.kite.setWingCount(9);
+                break;
+            case KeyEvent.VK_ENTER:
+                this.stars.cycleFocus();
                 break;
         } 
     }

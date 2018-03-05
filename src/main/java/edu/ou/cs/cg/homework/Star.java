@@ -4,13 +4,19 @@ import javax.media.opengl.*;
 
 public class Star extends DynamicDrawable
 {
-    private float degreeSkip;
-    private float alpha;
+	private final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
+	private final float[] ORANGE = new float[]{1.0f, 140f/255f, 0f};
 
-    public Star(int pointCount, float alpha)
+    private float degreeSkip;
+	private float alpha;
+	private float[] color = YELLOW;
+	private Point center;
+
+    public Star(int pointCount, float alpha, Point center)
     {
         this.degreeSkip = 360f / (float)pointCount;
-        this.alpha = alpha;
+		this.alpha = alpha;
+		this.center = center;
     }
 
     /* Draws the eight point starts at the top right.
@@ -20,14 +26,14 @@ public class Star extends DynamicDrawable
 	 * @param color: Color of the star
 	 * @param alpha: Fade of star color
 	 */
-	private void drawStar(GL2 gl, Point center, float radius, float[] color, float alpha)
+	private void drawStar(GL2 gl, float radius, float alpha)
 	{
 		final float SCALE = 0.4f;
 		// Enable alpha blending
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
-		gl.glColor4f(color[0], color[1], color[2], alpha);
+		gl.glColor4f(this.color[0], this.color[1], this.color[2], alpha);
 		// Get and draw center
 		gl.glVertex2d(center.getX(), center.getY());
 		double centx = center.getX();
@@ -48,7 +54,21 @@ public class Star extends DynamicDrawable
 
     public void update(GL2 gl, Point pos, boolean ...state)
     {
-        final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-        this.drawStar(gl, pos, 0.08f, YELLOW, this.alpha);
-    }
+        this.drawStar(gl, 0.08f, this.alpha);
+	}
+	
+	public void setOutFocus()
+	{
+		this.color = YELLOW;
+	}
+
+	public void setInFocus()
+	{
+		this.color = ORANGE;
+	}
+
+	public void setCenter(Point center)
+	{
+		this.center = center;
+	}
 }

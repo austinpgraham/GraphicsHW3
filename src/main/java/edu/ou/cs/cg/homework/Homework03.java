@@ -16,7 +16,6 @@ package edu.ou.cs.cg.homework;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -78,6 +77,7 @@ public final class Homework03
 	private static FenceLine leftSecond = new FenceLine();
 	private static ArrayList<FenceLine> fences = new ArrayList<FenceLine>();
 	private static Kite kite = new Kite(MIN, MAX, ROAD_LIM);
+	private static StarCollection stars = new  StarCollection();
 
 	//**********************************************************************
 	// Main
@@ -106,8 +106,9 @@ public final class Homework03
 			});
 
 		canvas.addGLEventListener(new Homework03());
-		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences, kite));
-
+		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences, kite, stars));
+		canvas.addMouseListener(new EnvironmentMouseListener(stars, GRASS_LIM));
+		
 		FPSAnimator		animator = new FPSAnimator(canvas, 60);
 
 		animator.start();
@@ -129,6 +130,18 @@ public final class Homework03
 		fences.add(rightLeftSide);
 		fences.add(farRight);
 		fences.add(leftSecond);
+
+		final Point star1 = new Point(1.0f, MAX.getFloatY() - 0.2f);
+		final Point star2 = new Point(1.3f, MAX.getFloatY() - 0.3f);
+		final Point star3 = new Point(1.6f, MAX.getFloatY() - 0.25f);
+		final Point star4 = new Point(1.7f, MAX.getFloatY() - 0.5f);
+		final Point star5 = new Point(1.55f, MAX.getFloatY() - 0.7f);
+
+		stars.addStar(new Star(8, 1.0f, star1));
+		stars.addStar(new Star(8, 1.0f, star2));
+		stars.addStar(new Star(8, 1.0f, star3));
+		stars.addStar(new Star(8, 0.5f, star4));
+		stars.addStar(new Star(8, 0.3f, star5));
 	}
 
 	//**********************************************************************
@@ -229,18 +242,12 @@ public final class Homework03
 			post += 2;
 		}
 
-		// // Draw eight point starts in the sky
-		// final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
-		// final Point2D.Float star1 = new Point2D.Float(1.0f, MAX.getFloatY() - 0.2f);
-		// this.drawEightPointStar(gl, star1, 0.08f, YELLOW, 1f);
-		// final Point2D.Float star2 = new Point2D.Float(1.3f, MAX.getFloatY() - 0.3f);
-		// this.drawEightPointStar(gl, star2, 0.08f, YELLOW, 1f);
-		// final Point2D.Float star3 = new Point2D.Float(1.6f, MAX.getFloatY() - 0.25f);
-		// this.drawEightPointStar(gl, star3, 0.08f, YELLOW, 1f);
-		// final Point2D.Float star4 = new Point2D.Float(1.7f, MAX.getFloatY() - 0.5f);
-		// this.drawEightPointStar(gl, star4, 0.08f, YELLOW, 0.5f);
-		// final Point2D.Float star5 = new Point2D.Float(1.55f, MAX.getFloatY() - 0.7f);
-		// this.drawEightPointStar(gl, star5, 0.08f, YELLOW, 0.3f);
+		// Draw eight point starts in the sky
+		stars.getStars().get(0).update(gl, null);
+		stars.getStars().get(1).update(gl, null);
+		stars.getStars().get(2).update(gl, null);
+		stars.getStars().get(3).update(gl, null);
+		stars.getStars().get(4).update(gl, null);
 
 		// Draw the kite and string
 		kite.update(gl);
