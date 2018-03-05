@@ -1,15 +1,37 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws a brown house
+ */
 public class BrownHouse extends House
 {
-    private boolean hasStar;
+	// If this house has the star at the top
+	private boolean hasStar;
+	
+	// If this house has the symbol on the door
     private boolean hasDoorSymbol;
 
+	// Second window object not accounted for in
+	// base house object
     private Window secondWindow = new Window();
-    private Point start;
 
+	// Point to start drawing
+	private Point start;
+
+	/**
+	 * Construct house object
+	 * @param min: Minimum window dimensions
+	 * @param max: Maximum window dimensions
+	 * @param road_lim: Upper road limit
+	 * @param start: Point to start drawing
+	 * @param hasStar: If this house should have star at the top
+	 * @param hasDoorSymbol: If this house has the door symbol
+	 */
     public BrownHouse(Point min, Point max, float road_lim, Point start, boolean hasStar, boolean hasDoorSymbol)
     {
         super(min, max, road_lim);
@@ -18,7 +40,8 @@ public class BrownHouse extends House
         this.start = start;
     }
 
-    /* The the brown house on the left
+    /**
+	 * The the brown house on the left
 	 * @param gl: The GL context
 	 */
     @Override

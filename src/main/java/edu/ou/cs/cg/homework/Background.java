@@ -1,26 +1,47 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws the background of the scene
+ */
 public class Background extends DimensionedDrawable
 {
+    // Upper grass limit
     private float grass_lim;
+
+    // Upper road limit
     private float road_lim;
 
+    // Galaxy object
     private Galaxy galaxy;
+
+    // Road object
     private Road road;
 
+    /**
+     * Default background constructor
+     * @param min_dim: Minimum window dimensions
+     * @param max_dim: Maximum window dimensions
+     * @param grass_lim: Upper grass limit
+     * @param road_lim: Upper road limit
+     */
     public Background(Point min_dim, Point max_dim, float grass_lim, float road_lim)
     {
         super(min_dim, max_dim);
         this.grass_lim = grass_lim;
         this.road_lim = road_lim;
 
+        // Construct background galaxy and road objects
         this.galaxy = new Galaxy();
         this.road = new Road(this.min_dim, this.max_dim);
     }
 
-    /* Draw the sky background
+    /** 
+     * Draw the sky background
 	 * @param gl: The GL context
 	 */
 	private void drawSky(GL2 gl)
@@ -35,7 +56,8 @@ public class Background extends DimensionedDrawable
 		Utils.drawQuadGradient(gl, one, two, three, four, purple, green);
     }
     
-    /* Draw the grass background
+    /**
+     *  Draw the grass background
 	 * @param gl: GL context
 	 */
 	private void drawGrass(GL2 gl)
@@ -50,16 +72,27 @@ public class Background extends DimensionedDrawable
 		Utils.drawQuadGradient(gl, one, two, three, four, purple, green);
     }
     
+    /**
+     * Get the galaxy object
+     */
     public Galaxy getGalaxy()
     {
         return this.galaxy;
     }
 
+    /**
+     * Get the road object
+     */
     public Road getRoad()
     {
         return this.road;
     }
 
+    /**
+     * Update all objects draw within
+     * this class.
+     * @param gl: GL context
+     */
     @Override
     public void update(GL2 gl)
     {
