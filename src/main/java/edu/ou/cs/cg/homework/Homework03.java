@@ -324,9 +324,6 @@ public final class Homework03
 			Utils.drawLine(gl, center, from, GRAY, 5.0f, 0.3f);
 			Utils.drawLine(gl, center, to, GRAY, 5.0f, 0.3f);
 		}
-		// final Point2D.Float from = new Point2D.Float((float)vert[vert.length - 2], (float)vert[vert.length - 1]);
-		// final Point2D.Float to = new Point2D.Float((float)vert[0], (float)vert[1]);
-		// this.drawLine(gl, from, to, GRAY, 5.0f, 0.3f);
 	}
 }
 

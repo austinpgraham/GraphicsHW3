@@ -9,11 +9,15 @@ public class Hopscotch extends Drawable
 
     private final float DELTA = 0.1f;
     private final float OFFSET = 0.015f;
-    private final float HEIGHT = DELTA;
+	private final float HEIGHT = DELTA;
+	private final float PART_HEIGHT = 0.13f;
+
+	private final float ROAD_LIM;
 
     public Hopscotch(float road_lim)
     {
-        this.lim = road_lim;
+		this.lim = road_lim;
+		this.ROAD_LIM = road_lim;
         this.startX = 0f;
     }
 
@@ -99,5 +103,20 @@ public class Hopscotch extends Drawable
     public void incrementBy(float amount)
     {
         this.startX += amount;
-    }
+	}
+	
+	public void incrementYBy(float amount)
+	{
+		this.lim += amount;
+	}
+
+	public boolean isWithinUpperLimit()
+	{
+		return this.lim < this.ROAD_LIM + this.PART_HEIGHT;
+	}
+
+	public boolean isWithinLowerLimit()
+	{
+		return this.lim > -1f + this.PART_HEIGHT*3;
+	}
 }

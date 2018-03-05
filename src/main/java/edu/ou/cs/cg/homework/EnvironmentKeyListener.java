@@ -42,6 +42,18 @@ public class EnvironmentKeyListener implements KeyListener
             case KeyEvent.VK_RIGHT:
                 this.hop.incrementBy(goBy);
                 break;
+            case KeyEvent.VK_UP: 
+                if(this.hop.isWithinUpperLimit())
+                {
+                    this.hop.incrementYBy(0.1f*slabWidth);
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if(this.hop.isWithinLowerLimit())
+                {
+                    this.hop.incrementYBy(-0.1f*slabWidth);
+                }
+                break;
             case KeyEvent.VK_SHIFT:
                 this.shiftPressed = false;
                 break;
