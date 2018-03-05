@@ -26,27 +26,27 @@ public class Kite extends DimensionedDrawable
 		this.drawKitePiece(gl, center, 0.25f, 270, 360, BLUE);
 
 		// Draw pieces of the string one at a time
-		final float[] GRAY = new float[]{0.8f, 0.8f, 0.8f};
-		Point start = new Point(this.max_dim.getFloatX() - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f);
-		Point end = new Point((float)start.getX() - 0.2f, (float)start.getY() + 0.15f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		end = new Point((float)start.getX() - 0.12f, (float)start.getY() + 0.1f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		end = new Point((float)start.getX() - 0.08f, (float)start.getY() + 0.11f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		end = new Point((float)start.getX() +0.02f, (float)start.getY() + 0.03f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		end = new Point((float)start.getX() - 0.04f, (float)start.getY() + 0.04f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		end = new Point((float)start.getX() - 0.04f, (float)start.getY() + 0.02f);
-		Utils.drawLine(gl, start, end, GRAY, 2.0f);
-		start = end;
-		Utils.drawLine(gl, start, center, GRAY, 2.0f);
+		// final float[] GRAY = new float[]{0.8f, 0.8f, 0.8f};
+		// Point start = new Point(this.max_dim.getFloatX() - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f);
+		// Point end = new Point((float)start.getX() - 0.2f, (float)start.getY() + 0.15f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// end = new Point((float)start.getX() - 0.12f, (float)start.getY() + 0.1f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// end = new Point((float)start.getX() - 0.08f, (float)start.getY() + 0.11f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// end = new Point((float)start.getX() +0.02f, (float)start.getY() + 0.03f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// end = new Point((float)start.getX() - 0.04f, (float)start.getY() + 0.04f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// end = new Point((float)start.getX() - 0.04f, (float)start.getY() + 0.02f);
+		// Utils.drawLine(gl, start, end, GRAY, 2.0f);
+		// start = end;
+		// Utils.drawLine(gl, start, center, GRAY, 2.0f);
 	}
 
 	/*

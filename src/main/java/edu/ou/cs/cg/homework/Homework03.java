@@ -78,6 +78,7 @@ public final class Homework03
 	private static ArrayList<FenceLine> fences = new ArrayList<FenceLine>();
 	private static Kite kite = new Kite(MIN, MAX, ROAD_LIM);
 	private static StarCollection stars = new  StarCollection();
+	private static KiteString ks = new KiteString(new Point(MAX.getFloatX() - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f), new Point(1.0f, 0.4f));
 
 	//**********************************************************************
 	// Main
@@ -107,7 +108,9 @@ public final class Homework03
 
 		canvas.addGLEventListener(new Homework03());
 		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences, kite, stars));
-		canvas.addMouseListener(new EnvironmentMouseListener(stars, GRASS_LIM));
+		EnvironmentMouseListener mouseListener = new EnvironmentMouseListener(stars, ks, GRASS_LIM);
+		canvas.addMouseListener(mouseListener);
+		canvas.addMouseMotionListener(mouseListener);
 		
 		FPSAnimator		animator = new FPSAnimator(canvas, 60);
 
@@ -251,6 +254,8 @@ public final class Homework03
 
 		// Draw the kite and string
 		kite.update(gl);
+
+		ks.update(gl);
 	}
 
 	//**********************************************************************

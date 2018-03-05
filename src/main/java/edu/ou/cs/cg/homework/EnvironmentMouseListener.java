@@ -2,16 +2,19 @@ package edu.ou.cs.cg.homework;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class EnvironmentMouseListener implements MouseListener
+public class EnvironmentMouseListener implements MouseListener, MouseMotionListener
 {
     private StarCollection stars;
     private float horizon;
+    private KiteString ks;
 
-    public EnvironmentMouseListener(StarCollection stars, float horizon)
+    public EnvironmentMouseListener(StarCollection stars, KiteString str, float horizon)
     {
         this.stars = stars;
         this.horizon = horizon;
+        this.ks = str;
     }
 
     private Point translateToGL(float x, float y)
@@ -23,17 +26,25 @@ public class EnvironmentMouseListener implements MouseListener
 
     public void mouseReleased(MouseEvent e) 
     {
-        Point glPoint = this.translateToGL(e.getX(), e.getY());
-        Star focusStar = this.stars.getFocusedStar();
-        if(focusStar != null && glPoint.getFloatY() > this.horizon)
-        {
-            focusStar.setCenter(glPoint);
-        }
+        this.ks.finish();
     }
 
     public void mousePressed(MouseEvent e) 
     {
-        
+        Point glPoint = this.translateToGL(e.getX(), e.getY());
+        this.ks.reset();
+        this.ks.addPoint(glPoint);
+    }
+
+    public void mouseDragged(MouseEvent e)
+    {
+        Point glPoint = this.translateToGL(e.getX(), e.getY());
+        this.ks.addPoint(glPoint);
+    }
+
+    public void mouseMoved(MouseEvent e)
+    {
+
     }
 
     public void mouseExited(MouseEvent e) 
@@ -48,6 +59,11 @@ public class EnvironmentMouseListener implements MouseListener
 
     public void mouseClicked(MouseEvent e) 
     {
-        
+        Point glPoint = this.translateToGL(e.getX(), e.getY());
+        Star focusStar = this.stars.getFocusedStar();
+        if(focusStar != null && glPoint.getFloatY() > this.horizon)
+        {
+            focusStar.setCenter(glPoint);
+        }
     }
 }
