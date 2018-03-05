@@ -301,57 +301,6 @@ public final class Homework03
 		// final Point2D.Float to = new Point2D.Float((float)vert[0], (float)vert[1]);
 		// this.drawLine(gl, from, to, GRAY, 5.0f, 0.3f);
 	}
-
-	/* Draw a five point star
-	 * @param gl: The GL context
-	 * @param start: The middle of the star
-	 */
-	private void drawFivePointStar(GL2 gl, Point2D start)
-	{
-		// Draw using triangle fan
-		double centerX = start.getX();
-		double centerY = start.getY();
-		gl.glBegin(gl.GL_TRIANGLE_FAN);
-		gl.glColor3f(1f, 1f, 0f);
-		gl.glVertex2d(centerX, centerY);
-		gl.glVertex2d(centerX, centerY + 0.05f);
-		gl.glVertex2d(centerX - 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.06f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX - 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX, centerY - 0.03f);
-		gl.glVertex2d(centerX + 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX + 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX + 0.06f, centerY + 0.005);
-		gl.glVertex2d(centerX + 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX, centerY + 0.05f);
-		gl.glEnd();
-		// Outline the triangle
-		gl.glBegin(gl.GL_LINES);
-		gl.glColor3f(0f, 0f, 0f);
-		gl.glVertex2d(centerX, centerY + 0.05f);
-		gl.glVertex2d(centerX - 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.06f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.06f, centerY + 0.005f);
-		gl.glVertex2d(centerX - 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX - 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX - 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX - 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX, centerY - 0.03f);
-		gl.glVertex2d(centerX, centerY - 0.03f);
-		gl.glVertex2d(centerX + 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX + 0.04f, centerY - 0.06f);
-		gl.glVertex2d(centerX + 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX + 0.02f, centerY - 0.02f);
-		gl.glVertex2d(centerX + 0.06f, centerY + 0.005f);
-		gl.glVertex2d(centerX + 0.06f, centerY + 0.005f);
-		gl.glVertex2d(centerX + 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX + 0.02f, centerY + 0.005f);
-		gl.glVertex2d(centerX, centerY + 0.05f);
-		gl.glEnd();
-	}
-
 	
 
 	/* Draw a fence post
