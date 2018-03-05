@@ -1,13 +1,20 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws a door object
+ */
 public class Door extends DynamicDrawable
 {
     private float HEIGHT = 0.25f;
     private float WIDTH = 0.13f;
 
-    /* Draw a door
+    /** 
+	 * Draw a door
 	 * @param gl: The GL context
 	 * @param pos: The bottom left corner
 	 */
@@ -32,6 +39,9 @@ public class Door extends DynamicDrawable
 		Utils.drawCircle(gl, knob_center, 0.01f, 0.0f, 360f, LIGHT_GRAY, true);
 	}
 
+	/**
+	 * Update the object
+	 */
     public void update(GL2 gl, Point pos, boolean...state)
     {
         this.drawDoor(gl, pos);;

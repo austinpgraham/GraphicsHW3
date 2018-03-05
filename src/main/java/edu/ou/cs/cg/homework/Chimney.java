@@ -1,13 +1,22 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws a chimney with or without smoke.
+ * a bit hardcoded, but works for the
+ * time being
+ */
 public class Chimney extends DynamicDrawable
 {
     private final float HEIGHT = 0.77f;
     private final float WIDTH = 0.1f;
 
-    /* Draw a smoke column
+    /**
+	 * Draw a smoke column
 	 * @param gl: The GL context
 	 * @param left: The left start
 	 * @param right: The right start
@@ -41,7 +50,8 @@ public class Chimney extends DynamicDrawable
 		gl.glEnd();
 	}
 
-    /* Draw a chimney
+    /**
+	 * Draw a chimney
 	 * @param gl: The GL context
 	 * @param po: Bottom left corner
 	 * @param smoke: Draw with smoke
@@ -68,6 +78,9 @@ public class Chimney extends DynamicDrawable
 		Utils.drawLine(gl, top_left, start, BLACK);
 	}
 
+	/**
+	 * Updates the drawing of the chimney
+	 */
     public void update(GL2 gl, Point pos, boolean ...state)
     {
         this.drawChimney(gl, pos, state[0]);
