@@ -13,6 +13,12 @@ public class Kite extends DimensionedDrawable
 	// Number of subsections within the kite
 	private int wingCount = 5;
 
+	// Alpha value of kite
+	private float alpha = 1.0f;
+
+	// The center of the kite
+	private Point center = new Point(10.0f, 10.4f);
+
 	/**
 	 * Construct the Kite object
 	 */
@@ -28,24 +34,25 @@ public class Kite extends DimensionedDrawable
 	private void drawKite(GL2 gl)
 	{
 		final float[] BLUE = new float[]{70f/255f,130f/255f,180f/255f};
-		final Point center = new Point(1.0f, 0.4f);
 		// Draw both halves of the kite
-		this.drawKitePiece(gl, center, 0.25f, 90, 180, BLUE);
-		this.drawKitePiece(gl, center, 0.25f, 270, 360, BLUE);
+		this.drawKitePiece(gl, this.center, 0.25f, 90, 180, BLUE, this.alpha);
+		this.drawKitePiece(gl, this.center, 0.25f, 270, 360, BLUE, this.alpha);
 	}
 
 	/*
 	 * Overload of the Utils draw circle that will include individual 
 	 * triangle outlines.
 	 */
-	private void drawKitePiece(GL2 gl, Point center, float radius, double start, double end, float[] color)
+	private void drawKitePiece(GL2 gl, Point center, float radius, double start, double end, float[] color, float alpha)
 	{
         final float[] GRAY = new float[]{0.6f, 0.6f, 0.6f};
         float skipBy = 90f/this.wingCount;
 		int len = this.wingCount + 1;
 		double[] vert = new double[len*2];
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
-		gl.glColor3f(color[0], color[1], color[2]);
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glColor4f(color[0], color[1], color[2], this.alpha);
 		gl.glVertex2d(center.getX(), center.getY());
 		double centx = center.getX();
 		double centy = center.getY();
@@ -86,5 +93,23 @@ public class Kite extends DimensionedDrawable
     public void setWingCount(int count)
     {
         this.wingCount = count;
-    }
+	}
+	
+	/**
+	 * Set the center of the kite
+	 * @param newCenter: The new center of the kite
+	 */
+	public void setCenter(Point newCenter)
+	{
+		this.center = newCenter;
+	}
+
+	/**
+	 * Set the alpha of the kite
+	 * @param newAlpha: The new alpha value
+	 */
+	public void setAlpha(float newAlpha)
+	{
+		this.alpha = newAlpha;
+	}
 }

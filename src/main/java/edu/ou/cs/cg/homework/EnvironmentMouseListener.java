@@ -21,16 +21,20 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
     // The drawn kite string
     private KiteString ks;
 
+    // The kite object
+    private Kite kite;
+
     private boolean hasDragged = false;
 
     /**
      * Construct the listener
      */
-    public EnvironmentMouseListener(StarCollection stars, KiteString str, float horizon)
+    public EnvironmentMouseListener(StarCollection stars, KiteString str, float horizon, Kite kite)
     {
         this.stars = stars;
         this.horizon = horizon;
         this.ks = str;
+        this.kite = kite;
     }
 
     /**
@@ -54,10 +58,7 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
         if(this.hasDragged)
         {
             this.ks.finish();
-        }
-        else
-        {
-            //this.ks.reset();
+            this.kite.setAlpha(1.0f);
         }
         this.hasDragged = false;
     }
@@ -81,6 +82,7 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
         {
             this.ks.reset();
         }
+        this.kite.setAlpha(0.5f);
         this.ks.addPoint(glPoint);
         this.hasDragged = true;
     }

@@ -14,9 +14,6 @@ public class KiteString extends Drawable
 {
     // The start point of the kite string
     private Point start;
-
-    // The end point of the kite string
-    private Point end;
     
     // The alpha of the kite string
     private float alpha = 1.0f;
@@ -30,10 +27,9 @@ public class KiteString extends Drawable
     /**
      * Construct the object with designated start and end
      */
-    public KiteString(Point start, Point end)
+    public KiteString(Point start)
     {
         this.start = start;
-        this.end = end;
         this.points = new ArrayList<Point>();
         this.points.add(start);
 
@@ -53,7 +49,6 @@ public class KiteString extends Drawable
      */
     public void finish()
     {
-        this.points.add(end);
         this.alpha = 1.0f;
         this.isFinished = true;
     }
@@ -103,5 +98,13 @@ public class KiteString extends Drawable
     public boolean isFinished()
     {
         return this.isFinished;
+    }
+
+    /**
+     * Get the final point in the kite string
+     */
+    public Point getFinalPoint()
+    {
+        return this.points.get(this.points.size() - 1);
     }
 }
