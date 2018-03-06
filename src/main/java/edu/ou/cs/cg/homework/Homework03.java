@@ -1,7 +1,7 @@
 //******************************************************************************
 // Copyright (C) 2016 University of Oklahoma Board of Trustees.
 //******************************************************************************
-// Last modified: Tue Feb  20 14:12 2016 by Chris Weaver
+// Last modified: Tue March 6th 2018 by Austin Graham
 //******************************************************************************
 // Major Modification History:
 //
@@ -29,7 +29,7 @@ import com.jogamp.opengl.util.gl2.GLUT;
 //******************************************************************************
 
 /**
- * The <CODE>Homework02</CODE> class.<P>
+ * The <CODE>Homework03</CODE> class.<P>
  *
  * @author  Austin Graham
  * @version %I%, %G%
@@ -64,6 +64,7 @@ public final class Homework03
 	private static final float ROAD_LIM = -0.6f;
 	private static final float GRASS_LIM = -0.05f;
 
+	// Create all objects in the scene
 	private static Background background = new Background(MIN, MAX, GRASS_LIM, ROAD_LIM);
 	private static Hopscotch hop = new Hopscotch(ROAD_LIM);
 	private static Moon moon = new Moon(MIN, MAX);
@@ -76,7 +77,7 @@ public final class Homework03
 	private static FenceLine farRight = new FenceLine();
 	private static FenceLine leftSecond = new FenceLine();
 	private static ArrayList<FenceLine> fences = new ArrayList<FenceLine>();
-	private static Kite kite = new Kite(MIN, MAX, ROAD_LIM);
+	private static Kite kite = new Kite(MIN, MAX);
 	private static StarCollection stars = new  StarCollection();
 	private static KiteString ks = new KiteString(new Point(MAX.getFloatX() - 3*0.075f - 0.02f-0.5f, ROAD_LIM + 0.4f), new Point(1.0f, 0.4f));
 
@@ -106,6 +107,7 @@ public final class Homework03
 				}
 			});
 
+		// Add the key and mouse listeners
 		canvas.addGLEventListener(new Homework03());
 		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences, kite, stars));
 		EnvironmentMouseListener mouseListener = new EnvironmentMouseListener(stars, ks, GRASS_LIM);
@@ -116,6 +118,7 @@ public final class Homework03
 
 		animator.start();
 
+		// Add the fence posts in a row
 		for(int i = 0; i < 4; i++)
 		{
 			farLeft.addFencePost(new FencePost(false));
@@ -125,21 +128,25 @@ public final class Homework03
 			rightLeftSide.addFencePost(new FencePost(true));
 		}
 
+		// Add the fence posts on the far right
 		farRight.addFencePost(new FencePost(false));
 		farRight.addFencePost(new FencePost(true));
 
+		// Add to the list of fence lines for updating
 		fences.add(farLeft);
 		fences.add(leftGreen);
 		fences.add(rightLeftSide);
 		fences.add(farRight);
 		fences.add(leftSecond);
 
+		// Map the star positions
 		final Point star1 = new Point(1.0f, MAX.getFloatY() - 0.2f);
 		final Point star2 = new Point(1.3f, MAX.getFloatY() - 0.3f);
 		final Point star3 = new Point(1.6f, MAX.getFloatY() - 0.25f);
 		final Point star4 = new Point(1.7f, MAX.getFloatY() - 0.5f);
 		final Point star5 = new Point(1.55f, MAX.getFloatY() - 0.7f);
 
+		// Add the stars to the collection
 		stars.addStar(new Star(8, 1.0f, star1));
 		stars.addStar(new Star(8, 1.0f, star2));
 		stars.addStar(new Star(8, 1.0f, star3));

@@ -1,15 +1,25 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws the green house
+ */
 public class GreenHouse extends House
 {
+	/**
+	 * Construct the green house
+	 */
     public GreenHouse(Point min, Point max, float road_lim)
     {
         super(min, max, road_lim);
     }
 
-    /* Draw the green house
+    /**
+	 * Draw the green house
 	 * @param gl: The GL context
 	 */
     @Override

@@ -1,3 +1,8 @@
+/**
+ * Author: Austin Graham
+ * Defines a series of GL based functions to draw
+ * more complex objects.
+ */
 package edu.ou.cs.cg.homework;
 
 import java.awt.geom.*;

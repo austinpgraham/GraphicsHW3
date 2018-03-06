@@ -1,15 +1,25 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws the moon
+ */
 public class Moon extends DimensionedDrawable
 {
+	/**
+	 * Construct teh moon object
+	 */
     public Moon(Point min_dim, Point max_dim)
     {
         super(min_dim,  max_dim);
     }
 
-    /* Draw the moon object
+    /**
+	 *  Draw the moon object
 	 * @param gl: The GL context
 	 */
 	private void drawMoon(GL2 gl)
@@ -23,6 +33,9 @@ public class Moon extends DimensionedDrawable
 		Utils.drawCircle(gl, small_center, 0.16f, 0.0, 360f, DARK_GRAY, false);
 	}
 
+	/**
+	 * Update the drawable object
+	 */
     @Override
     public void update(GL2 gl)
     {

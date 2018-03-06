@@ -1,17 +1,34 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws a star object
+ */
 public class Star extends DynamicDrawable
 {
+	// Define constant colors for the star
 	private final float[] YELLOW = new float[]{1.0f, 1.0f, 0f};
 	private final float[] ORANGE = new float[]{1.0f, 140f/255f, 0f};
 
-    private float degreeSkip;
+	// The degree difference at each point
+	private float degreeSkip;
+	
+	// Alpha value
 	private float alpha;
+
+	// Current drawing color
 	private float[] color = YELLOW;
+
+	// Center of the star
 	private Point center;
 
+	/**
+	 * Construct the star
+	 */
     public Star(int pointCount, float alpha, Point center)
     {
         this.degreeSkip = 360f / (float)pointCount;
@@ -19,7 +36,8 @@ public class Star extends DynamicDrawable
 		this.center = center;
     }
 
-    /* Draws the eight point starts at the top right.
+    /**
+	 *  Draws the eight point starts at the top right.
 	 * @param gl: the GL2 Context
 	 * @param gl: the center of the star
 	 * @param radius: Larger radius of star points
@@ -52,21 +70,33 @@ public class Star extends DynamicDrawable
 		gl.glEnd();
 	}
 
+	/**
+	 * Update the darawable object
+	 */
     public void update(GL2 gl, Point pos, boolean ...state)
     {
         this.drawStar(gl, 0.08f, this.alpha);
 	}
 	
+	/**
+	 * Unfocus this star
+	 */
 	public void setOutFocus()
 	{
 		this.color = YELLOW;
 	}
 
+	/**
+	 * Focus this starr
+	 */
 	public void setInFocus()
 	{
 		this.color = ORANGE;
 	}
 
+	/**
+	 * Set the center of the star
+	 */
 	public void setCenter(Point center)
 	{
 		this.center = center;

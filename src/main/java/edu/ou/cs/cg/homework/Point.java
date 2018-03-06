@@ -1,3 +1,10 @@
+/**
+ * Author: Austin Graham
+ * 
+ * Offers simple extention of Point2D 
+ * class to avoid having to cast the 
+ * coordinates all the time
+ */
 package edu.ou.cs.cg.homework;
 
 import java.awt.geom.Point2D;

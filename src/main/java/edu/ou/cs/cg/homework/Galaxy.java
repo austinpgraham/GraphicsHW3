@@ -1,16 +1,29 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draw the background galaxy.
+ */
 public class Galaxy extends Drawable
 {
+	// The number of stars in the galaxy
 	private int STAR_COUNT = 0;
+
+	// The amount of red in the color of the stars
 	private float redAmount = 0.8f;
+
+	// If the amount of red is decreasing
 	private boolean decreasing = true;
 
-    //*********************************************//
-	// Three change equations for Lorenz equations //
-	//*********************************************//
+	/**
+	 * The following three functions map the equations
+	 * for each dimension of a position of a star at
+	 * a given time.
+	 */
 	private double dx(double x, double y, double z)
 	{
 		return -10*(x - y);
@@ -26,7 +39,8 @@ public class Galaxy extends Drawable
 		return x*y - 8*z/3;
     }
     
-    /* Draw galazy using Lorenz equations
+    /**
+	 * Draw galazy using Lorenz equations
 	 * @param gl: The GL context
 	 */
 	private void drawGalaxy(GL2 gl)
@@ -52,15 +66,21 @@ public class Galaxy extends Drawable
 		}
 		gl.glEnd();
     }
-    
+	
+	/**
+	 * Update the galaxy object
+	 * @param gl: The GL context
+	 */
     public void update(GL2 gl)
     {
+		// Update the star count
 		this.STAR_COUNT +=10;
 		if (this.STAR_COUNT >= 20000)
 		{
 			this.STAR_COUNT = 0;
 		}
 
+		// Update the amount of red in the stars
 		if(this.decreasing)
 		{
 			this.redAmount -= 0.001f;
@@ -70,11 +90,13 @@ public class Galaxy extends Drawable
 			this.redAmount += 0.001f;
 		}
 
+		// Switch directions if necessary
 		if(this.redAmount < 0f || this.redAmount > 0.8f)
 		{
 			this.decreasing = !this.decreasing;
 		}
 		
+		// Draw the galaxy
         this.drawGalaxy(gl);
     }
 }

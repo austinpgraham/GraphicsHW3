@@ -1,9 +1,16 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws the hopscotch drawable object
+ */
 public class Hopscotch extends Drawable
 {
+	// the limit 
     private float lim;
     private float startX;
 
@@ -95,26 +102,43 @@ public class Hopscotch extends Drawable
 		return new Point((float)start.getX() + run, (float)start.getY() + rise);
 	}
 
+	/**
+	 * Update the hopscotch drawable object
+	 */
     public void update(GL2 gl)
     {
         this.drawHopscotch(gl);
     }
 
+	/**
+	 * Increment the x position by the given amount
+	 * @param amount: The amount to increment by
+	 */
     public void incrementBy(float amount)
     {
         this.startX += amount;
 	}
 	
+	/**
+	 * Increment the y position by the given amount
+	 * @param amount: The amount to increment by
+	 */
 	public void incrementYBy(float amount)
 	{
 		this.lim += amount;
 	}
 
+	/**
+	 * If the object is within the upper coordinates
+	 */
 	public boolean isWithinUpperLimit()
 	{
 		return this.lim < this.ROAD_LIM + this.PART_HEIGHT;
 	}
 
+	/**
+	 * If the object is within the lower coordinates
+	 */
 	public boolean isWithinLowerLimit()
 	{
 		return this.lim > -1f + this.PART_HEIGHT*3;

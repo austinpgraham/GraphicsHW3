@@ -1,13 +1,27 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Implementation of the drawable road
+ */
 public class Road extends DimensionedDrawable
 {
+    // Height of the road
     private final float HEIGHT;
+
+    // Difference between each slab
     private final float DELTA;
+
+    // Offset for each slab
     private final float OFFSET;
 
+    /**
+     * Construct the road object
+     */
     public Road(Point min, Point max)
     {
         super(min, max);
@@ -16,7 +30,8 @@ public class Road extends DimensionedDrawable
         this.OFFSET = 0.05f;
     }
 
-    /* Draw the road
+    /**
+     *  Draw the road
 	 * @param gl: The GL context
 	 */
 	private void drawRoad(GL2 gl)
@@ -45,17 +60,26 @@ public class Road extends DimensionedDrawable
 		}
     }
     
+    /**
+     * Update the drawable object
+     */
     @Override
     public void update(GL2 gl)
     {
         this.drawRoad(gl);
     }
 
+    /**
+     * Get the height of the road
+     */
     public float getHeight()
     {
         return this.HEIGHT;
     }
 
+    /**
+     * Get road slab width
+     */
     public float getDelta()
     {
         return this.DELTA;

@@ -21,6 +21,8 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
     // The drawn kite string
     private KiteString ks;
 
+    private boolean hasDragged = false;
+
     /**
      * Construct the listener
      */
@@ -49,7 +51,15 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
     public void mouseReleased(MouseEvent e) 
     {
         // Connect kite string to kite
-        this.ks.finish();
+        if(this.hasDragged)
+        {
+            this.ks.finish();
+        }
+        else
+        {
+            this.ks.reset();
+        }
+        this.hasDragged = false;
     }
 
     /**
@@ -57,11 +67,8 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
      */
     public void mousePressed(MouseEvent e) 
     {
-        // Get the point, reset the kite string, add the clicked
-        // point to the string
-        Point glPoint = this.translateToGL(e.getX(), e.getY());
+        // reset the kite string
         this.ks.reset();
-        this.ks.addPoint(glPoint);
     }
 
     /**
@@ -72,6 +79,7 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
         // Translate the point and add to kite string
         Point glPoint = this.translateToGL(e.getX(), e.getY());
         this.ks.addPoint(glPoint);
+        this.hasDragged = true;
     }
 
     public void mouseMoved(MouseEvent e)

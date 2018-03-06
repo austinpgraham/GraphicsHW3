@@ -1,17 +1,32 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import java.util.ArrayList;
 
 import javax.media.opengl.*;
 
+/**
+ * Implemenation of drawable kite string
+ */
 public class KiteString extends Drawable
 {
+    // The start point of the kite string
     private Point start;
+
+    // The end point of the kite string
     private Point end;
+    
+    // The alpha of the kite string
     private float alpha = 1.0f;
 
+    // List of points in the string
     private ArrayList<Point> points;
 
+    /**
+     * Construct the object with designated start and end
+     */
     public KiteString(Point start, Point end)
     {
         this.start = start;
@@ -21,17 +36,27 @@ public class KiteString extends Drawable
 
     }
 
+    /**
+     * Add a point to the string object
+     */
     public void addPoint(Point newPoint)
     {
         this.points.add(newPoint);
     }
 
+    /**
+     * Append the end point and 
+     * set the alpha to full saturation
+     */
     public void finish()
     {
         this.points.add(end);
         this.alpha = 1.0f;
     }
 
+    /**
+     * Remove all points in the string
+     */
     public void reset()
     {
         this.points = new ArrayList<Point>();
@@ -39,6 +64,9 @@ public class KiteString extends Drawable
         this.alpha = 0.5f;
     }
 
+    /**
+     * Draw the string
+     */
     private void drawString(GL2 gl)
     {
         final float[] GRAY = new float[]{0.8f, 0.8f, 0.8f};
@@ -48,6 +76,9 @@ public class KiteString extends Drawable
         }
     }
 
+    /**
+     * Update the drawable object
+     */
     public void update(GL2 gl)
     {
         this.drawString(gl);

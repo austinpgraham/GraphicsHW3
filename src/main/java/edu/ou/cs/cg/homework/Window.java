@@ -1,13 +1,21 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Draws a window object
+ */
 public class Window extends DynamicDrawable
 {
+	// Dimensions of window drawable objects
     private float DIM = 0.12f;
     private float LINE_WIDTH = 3.0f;
 
-    /* Draw a window object
+    /**
+	 *  Draw a window object
 	 * @param gl: The GL context
 	 * @param pos: The bottom left corner
 	 */
@@ -28,6 +36,7 @@ public class Window extends DynamicDrawable
 		final Point left_middle = new Point((float)left_top.getX(), (float)left_top.getY() - DIM / 2.0f);
 		final Point right_middle = new Point((float)right_top.getX(), (float)right_top.getY() - DIM / 2.0f);
 		Utils.drawQuad(gl, start, right_bot, right_top, left_top, LIGHT_PURPLE);
+		// If the window is not closed, draw the light in the middle
 		if(!isClosed)
 		{
 			Utils.drawTriangle(gl, start, right_bot, top_middle, YELLOW);
@@ -41,7 +50,10 @@ public class Window extends DynamicDrawable
 		Utils.drawLine(gl, left_middle, right_middle, BLACK, LINE_WIDTH);
 		Utils.drawLine(gl, top_middle, bot_middle, BLACK, LINE_WIDTH);
     }
-    
+	
+	/**
+	 * Update the drawable object
+	 */
     public void update(GL2 gl, Point pos, boolean ...state)
     {
         this.drawWindow(gl, pos, state[0]);
