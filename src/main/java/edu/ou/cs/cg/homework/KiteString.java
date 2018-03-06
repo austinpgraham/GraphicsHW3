@@ -24,6 +24,9 @@ public class KiteString extends Drawable
     // List of points in the string
     private ArrayList<Point> points;
 
+    // If this string has finished drawing
+    private boolean isFinished = true;
+
     /**
      * Construct the object with designated start and end
      */
@@ -52,6 +55,7 @@ public class KiteString extends Drawable
     {
         this.points.add(end);
         this.alpha = 1.0f;
+        this.isFinished = true;
     }
 
     /**
@@ -62,6 +66,7 @@ public class KiteString extends Drawable
         this.points = new ArrayList<Point>();
         this.points.add(start);
         this.alpha = 0.5f;
+        this.isFinished = false;
     }
 
     /**
@@ -82,5 +87,21 @@ public class KiteString extends Drawable
     public void update(GL2 gl)
     {
         this.drawString(gl);
+    }
+
+    /**
+     * Get number of points in kite string
+     */
+    public int getPointCount()
+    {
+        return this.points.size();
+    }
+
+    /**
+     * Get if the current string has finished
+     */
+    public boolean isFinished()
+    {
+        return this.isFinished;
     }
 }

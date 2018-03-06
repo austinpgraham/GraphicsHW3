@@ -57,7 +57,7 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
         }
         else
         {
-            this.ks.reset();
+            //this.ks.reset();
         }
         this.hasDragged = false;
     }
@@ -67,8 +67,7 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
      */
     public void mousePressed(MouseEvent e) 
     {
-        // reset the kite string
-        this.ks.reset();
+        // Not implemented
     }
 
     /**
@@ -78,6 +77,10 @@ public class EnvironmentMouseListener implements MouseListener, MouseMotionListe
     {
         // Translate the point and add to kite string
         Point glPoint = this.translateToGL(e.getX(), e.getY());
+        if(this.ks.isFinished())
+        {
+            this.ks.reset();
+        }
         this.ks.addPoint(glPoint);
         this.hasDragged = true;
     }

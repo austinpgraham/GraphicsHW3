@@ -55,7 +55,10 @@ public class FencePost extends DynamicDrawable
 		Utils.drawLine(gl, right_top, left_top, BLACK);
 		Utils.drawLine(gl, left_top, start, BLACK);
 	}
-    
+	
+	/**
+	 * Update the drawable object
+	 */
     public void update(GL2 gl, Point pos, boolean ...state)
     {
         if (!this.reflected)
@@ -68,8 +71,16 @@ public class FencePost extends DynamicDrawable
         }
     }
 
+	/**
+	 * Adjust height of the fence post
+	 * only if the adjustment results in
+	 * a positive height.
+	 */
     public void adjustHeight(float amount)
     {
-        this.HEIGHT += amount;
+		if(this.HEIGHT + amount - 0.05f > 0)
+		{
+			this.HEIGHT += amount;
+		}
     }
 }
