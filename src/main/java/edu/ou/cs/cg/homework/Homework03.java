@@ -109,6 +109,7 @@ public final class Homework03
 
 		// Add the key and mouse listeners
 		canvas.addGLEventListener(new Homework03());
+		canvas.setFocusTraversalKeysEnabled(false);
 		canvas.addKeyListener(new EnvironmentKeyListener(hop, background.getRoad(), greenHouse, leftBrownHouse, rightBrownHouse, fences, kite, stars));
 		EnvironmentMouseListener mouseListener = new EnvironmentMouseListener(stars, ks, GRASS_LIM, kite, rightLeftSide);
 		canvas.addMouseListener(mouseListener);

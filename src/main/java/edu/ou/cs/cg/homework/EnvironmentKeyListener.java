@@ -149,7 +149,7 @@ public class EnvironmentKeyListener implements KeyListener
             case KeyEvent.VK_9:
                 this.kite.setWingCount(9);
                 break;
-            case KeyEvent.VK_ENTER:
+            case KeyEvent.VK_TAB:
                 this.stars.cycleFocus();
                 break;
         } 
