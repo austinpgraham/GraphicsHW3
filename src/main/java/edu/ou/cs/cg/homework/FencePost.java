@@ -1,20 +1,33 @@
+/**
+ * Author: Austin Graham
+ */
 package edu.ou.cs.cg.homework;
 
 import javax.media.opengl.*;
 
+/**
+ * Implementation of fence post drawable
+ */
 public class FencePost extends DynamicDrawable
 {
+	// Dimensions of post
     private final float WIDTH = 0.075f;
-    private float HEIGHT = 0.4f;
+	private float HEIGHT = 0.4f;
+	
+	// Start point
+	private Point start;
 
+	// If this post is reflected
     private boolean reflected;
 
+	// Construct the object
     public FencePost(boolean reflected)
     {
         this.reflected = reflected;
     }
 
-    /* Draw a fence post
+    /**
+	 * Draw a fence post
 	 * @param gl: The GL context
 	 * @param source: The bottom left corner
 	 */
@@ -25,7 +38,7 @@ public class FencePost extends DynamicDrawable
 		final float[] BLACK = new float[]{0f, 0f, 0f};
 
 		// Define and outline
-		final Point start = (Point)source;
+		this.start = (Point)source;
 		final Point right_bot = new Point((float)start.getX() + WIDTH, (float)start.getY());
 		final Point right_top = new Point((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT);
 		final Point left_top = new Point((float)start.getX(), (float)right_top.getY() - 0.05f);
@@ -45,7 +58,7 @@ public class FencePost extends DynamicDrawable
 		final float[] BEIGE = new float[]{0.9f, 0.837f, 0.735f};
 		final float[] BLACK = new float[]{0f, 0f, 0f};
 
-		final Point start = (Point)source;
+		this.start = (Point)source;
 		final Point right_bot = new Point((float)start.getX() + WIDTH, (float)start.getY());
 		final Point right_top = new Point((float)start.getX() + WIDTH, (float)start.getY() + HEIGHT - 0.05f);
 		final Point left_top = new Point((float)start.getX(), (float)start.getY() + HEIGHT);
@@ -82,5 +95,22 @@ public class FencePost extends DynamicDrawable
 		{
 			this.HEIGHT += amount;
 		}
-    }
+	}
+	
+	/**
+	 * Get the current tip of the post
+	 */
+	public Point getTip()
+	{
+		Point p;
+		if(this.reflected)
+		{
+			p = new Point(this.start.getFloatX(), this.start.getFloatY() + this.HEIGHT);
+		}
+		else 
+		{
+			p = new Point(this.start.getFloatX() + this.WIDTH, this.start.getFloatY() + this.HEIGHT);
+		}
+		return p;
+	}
 }

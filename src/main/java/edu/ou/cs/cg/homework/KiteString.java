@@ -55,10 +55,12 @@ public class KiteString extends Drawable
 
     /**
      * Remove all points in the string
+     * @param start: The start point for the string
      */
-    public void reset()
+    public void reset(Point start)
     {
         this.points = new ArrayList<Point>();
+        this.start = start;
         this.points.add(start);
         this.alpha = 0.5f;
         this.isFinished = false;
